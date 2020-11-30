@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightBlue_bg"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/navyBlue"
+        android:elevation="8dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_expense"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/newExpense_back_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back_arrow"
+
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/vertical_guid_right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.97" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+        <TextView
+            android:id="@+id/newExpense_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+
+
+            app:layout_constraintBottom_toTopOf="@+id/newExpense_title_et"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@id/horizontal_guid_top"
+            tools:text="title"
+
+            />
+
+        <EditText
+            android:id="@+id/newExpense_title_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/title"
+
+
+            app:layout_constraintBottom_toTopOf="@+id/newExpense_amount_tv"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@+id/newExpense_title_tv" />
+
+        <TextView
+            android:id="@+id/newExpense_amount_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+
+            app:layout_constraintBottom_toTopOf="@+id/newExpense_amount_et"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@+id/newExpense_title_et" />
+
+        <EditText
+            android:id="@+id/newExpense_amount_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/amount"
+            android:inputType="number"
+
+            app:layout_constraintBottom_toTopOf="@id/newExpense_paymentDate_tv"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@id/newExpense_amount_tv" />
+
+        <TextView
+            android:id="@+id/newExpense_paymentDate_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/paymentDate"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+
+            app:layout_constraintBottom_toTopOf="@+id/newExpense_datePicker_tv"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@id/newExpense_amount_et" />
+
+        <TextView
+            android:id="@+id/newExpense_datePicker_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:hint="@string/dateExample"
+            android:padding="10dp"
+            android:textColor="@color/red"
+            android:textSize="18sp"
+
+            app:layout_constraintBottom_toTopOf="@+id/newExpense_expenseType_tv"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/calendar_iv"
+            app:layout_constraintTop_toBottomOf="@+id/newExpense_paymentDate_tv" />
+
+        <ImageView
+            android:id="@+id/calendar_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/twotone_today_black_48dp"
+
+            app:layout_constraintBottom_toTopOf="@+id/newExpense_expenseType_tv"
+            app:layout_constraintLeft_toRightOf="@id/newExpense_datePicker_tv"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@+id/newExpense_paymentDate_tv" />
+
+        <TextView
+            android:id="@+id/newExpense_expenseType_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/expenseType"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+
+            app:layout_constraintBottom_toTopOf="@+id/horizontal_guid_middle"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@+id/newExpense_expenseType_sp"
+            app:layout_constraintTop_toBottomOf="@id/newExpense_datePicker_tv" />
+
+
+        <Spinner
+            android:id="@+id/newExpense_expenseType_sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+
+            app:layout_constraintBottom_toTopOf="@+id/horizontal_guid_middle"
+            app:layout_constraintLeft_toRightOf="@id/newExpense_expenseType_tv"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@+id/calendar_iv"
+
+            />
+
+        <Button
+            android:id="@+id/newExpense_save_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_curve_bg"
+            android:backgroundTint="@color/navyBlue"
+            android:text="@string/save"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+
+            app:layout_constraintBottom_toTopOf="@id/horizontal_guid_bottom"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_guid_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+
+            app:layout_constraintGuide_percent="0.02"
+
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_left_guid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_right_guid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_guid_middle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="275dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_guid_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.97" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

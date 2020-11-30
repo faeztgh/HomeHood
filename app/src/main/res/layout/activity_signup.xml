@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightBlue_bg"
+    android:orientation="vertical">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/navyBlue"
+        android:elevation="8dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signUp"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/signUp_back_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back_arrow"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/vertical_guid_right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.97" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+        >
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:paddingBottom="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/horizontal_middle_guid"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@id/horizontal_top_guid">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <EditText
+                    android:id="@+id/mobile_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint="@string/mobile"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:textColorHint="@color/navyBlue"
+                    app:layout_constraintBottom_toTopOf="@id/firstname_edt"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/firstname_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:hint="@string/firstname"
+                    android:inputType="text"
+
+                    android:textColorHint="@color/navyBlue"
+                    app:layout_constraintBottom_toTopOf="@+id/email_edt"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/lastname_edt"
+
+                    app:layout_constraintTop_toBottomOf="@id/mobile_edt" />
+
+                <EditText
+                    android:id="@+id/lastname_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:autofillHints=""
+                    android:hint="@string/lastname"
+                    android:inputType="text"
+
+                    android:textColorHint="@color/navyBlue"
+                    app:layout_constraintBottom_toTopOf="@+id/email_edt"
+                    app:layout_constraintLeft_toRightOf="@id/firstname_edt"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/mobile_edt" />
+
+                <EditText
+                    android:id="@+id/email_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+
+                    android:textColorHint="@color/navyBlue"
+                    app:layout_constraintBottom_toTopOf="@id/username_edt"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/firstname_edt" />
+
+                <EditText
+                    android:id="@+id/username_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint="@string/username"
+                    android:inputType="text"
+
+                    android:textColorHint="@color/navyBlue"
+                    app:layout_constraintBottom_toTopOf="@id/confirm_password_edt"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/password_edt"
+
+                    app:layout_constraintTop_toBottomOf="@id/email_edt" />
+
+                <EditText
+                    android:id="@+id/password_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+
+                    android:textColorHint="@color/navyBlue"
+                    app:layout_constraintBottom_toTopOf="@id/confirm_password_edt"
+                    app:layout_constraintLeft_toRightOf="@id/username_edt"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/email_edt" />
+
+                <EditText
+                    android:id="@+id/confirm_password_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint="@string/confirm_password"
+                    android:inputType="textPassword"
+
+
+                    android:textColorHint="@color/navyBlue"
+                    app:layout_constraintBottom_toTopOf="@id/address_edt"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+
+                    app:layout_constraintTop_toBottomOf="@id/username_edt" />
+
+                <EditText
+                    android:id="@+id/address_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:hint="@string/address"
+                    android:inputType="text"
+                    android:textColorHint="@color/navyBlue"
+
+                    app:layout_constraintBottom_toTopOf="@id/number_of_units_edt"
+                    app:layout_constraintHorizontal_weight="0.8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/location_iv"
+                    app:layout_constraintTop_toBottomOf="@id/confirm_password_edt" />
+
+                <ImageView
+                    android:id="@+id/location_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/address"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/baseline_location_on_black_48dp"
+                    android:textColorHint="@color/navyBlue"
+                    app:layout_constraintBottom_toTopOf="@id/number_of_units_edt"
+
+                    app:layout_constraintHorizontal_weight="0.2"
+                    app:layout_constraintLeft_toRightOf="@id/address_edt"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/confirm_password_edt" />
+
+                <TextView
+                    android:id="@+id/number_of_units_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="17dp"
+                    android:gravity="center"
+                    android:text="@string/number_of_units"
+                    android:textAlignment="center"
+                    android:textColor="@color/navyBlue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+
+                    app:layout_constraintHorizontal_weight="0.8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/number_of_units_edt"
+                    app:layout_constraintTop_toBottomOf="@+id/address_edt" />
+
+
+                <EditText
+                    android:id="@+id/number_of_units_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:autofillHints=""
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textColorHint="@color/navyBlue"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="0.2"
+                    app:layout_constraintLeft_toRightOf="@id/number_of_units_tv"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/location_iv" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
+
+
+        <TextView
+            android:id="@+id/send_message_to_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+
+            android:text="@string/send_message_to"
+            android:textColor="@color/navyBlue"
+            android:textSize="20sp"
+
+            app:layout_constraintBottom_toTopOf="@id/static_ll"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintTop_toBottomOf="@id/horizontal_middle_guid"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <LinearLayout
+            android:id="@+id/static_ll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="100dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/box_border"
+            android:orientation="vertical"
+
+
+            app:layout_constraintBottom_toTopOf="@id/confirm_btn"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@id/send_message_to_tv">
+
+            <CheckBox
+                android:id="@+id/sms_chkbx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/sms"
+                android:textColor="@color/navyBlue" />
+
+            <CheckBox
+                android:id="@+id/email_chkbx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/email"
+                android:textColor="@color/navyBlue"
+
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/confirm_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/darkblue_gradient_curve_btn"
+            android:padding="10dp"
+            android:text="@string/confirm_btn"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+
+            app:layout_constraintBottom_toTopOf="@id/horizontal_bottom_guid"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@id/static_ll"
+
+
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_top_guid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.01"
+
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_bottom_guid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.96"
+
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_middle_guid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".65" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_left_guid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+
+            app:layout_constraintGuide_percent=".1" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_right_guid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".9"
+
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

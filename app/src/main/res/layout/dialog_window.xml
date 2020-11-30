@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:background="@color/white"
+    android:maxHeight="270dp"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/full_name_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/full_name"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+
+
+        app:layout_constraintBottom_toTopOf="@id/username_tv"
+        app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+        app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+        app:layout_constraintTop_toBottomOf="@id/horizontal_top_guid"
+
+
+        />
+
+    <TextView
+        android:id="@+id/username_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/username"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toTopOf="@id/email_tv"
+        app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+        app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+        app:layout_constraintTop_toBottomOf="@id/full_name_tv"
+
+        />
+
+    <TextView
+        android:id="@+id/email_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/email"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toTopOf="@id/mobile_tv"
+        app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+        app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+        app:layout_constraintTop_toBottomOf="@id/username_tv"
+
+
+        />
+
+    <TextView
+        android:id="@+id/mobile_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/mobile"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toTopOf="@id/address_tv"
+        app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+        app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+        app:layout_constraintTop_toBottomOf="@id/email_tv"
+
+
+        />
+
+    <TextView
+        android:id="@+id/address_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/address"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toTopOf="@id/number_of_units_tv"
+        app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+        app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+        app:layout_constraintTop_toBottomOf="@id/mobile_tv"
+
+
+        />
+
+    <TextView
+        android:id="@+id/number_of_units_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/number_of_units"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toTopOf="@id/confirmation_type_tv"
+        app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+        app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+        app:layout_constraintTop_toBottomOf="@id/address_tv"
+
+
+        />
+
+    <TextView
+        android:id="@+id/confirmation_type_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/confirmation_type"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toTopOf="@id/close_tv"
+        app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+        app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+        app:layout_constraintTop_toBottomOf="@id/number_of_units_tv"
+
+
+        />
+
+
+    <TextView
+        android:id="@+id/close_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/close"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+
+        app:layout_constraintBottom_toTopOf="@id/horizontal_bottom_guid"
+        app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+        app:layout_constraintTop_toBottomOf="@id/confirmation_type_tv" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_left_guid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05"
+
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_right_guid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_top_guid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.03" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_bottom_guid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4"
+
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

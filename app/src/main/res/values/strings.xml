@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">HomeHood</string>
+    <string name="username">UserName</string>
+    <string name="password">Password</string>
+    <string name="signup_to_register">Sign up to Register</string>
+    <string name="app_title">Welcome to HomeHood</string>
+    <string name="signin">Sign in</string>
+    <string name="signUp">SignUp</string>
+    <string name="number_of_units">Number of units</string>
+    <string name="send_message_to">Send Message to:</string>
+    <string name="sms">Sms</string>
+    <string name="mobile">Mobile</string>
+    <string name="firstname">FirstName</string>
+    <string name="lastname">LastName</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="address">Full Address</string>
+    <string name="confirm_btn">Confirm</string>
+    <string name="email">Email</string>
+    <string name="home_hood">HomeHood</string>
+    <string name="reports">Reports</string>
+    <string name="profile">Profile</string>
+    <string name="exit">Exit</string>
+    <string name="announcements">Announcements</string>
+    <string name="expenses">Expenses</string>
+    <string name="payments">Payments</string>
+    <string name="full_name">Full Name</string>
+    <string name="close">close</string>
+    <string name="confirmation_type">Confirmation type</string>
+
+    <string name="title">Title</string>
+    <string name="amount">Amount</string>
+    <string name="paymentDate">Payment Date</string>
+    <string name="expenseType">Expense Type</string>
+    <string name="save">Save</string>
+    <string name="new_expense">New Expense</string>
+<string name="dateExample">"2020-10-01"</string>
+
+    <string-array name="expenseTypes">
+
+        <item>Repairs</item>
+        <item>Gas Bill</item>
+        <item>Water Bill</item>
+        <item>Electricity Bill</item>
+    </string-array>
+</resources>

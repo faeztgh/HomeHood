@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightBlue_bg"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_title"
+            android:scaleType="fitXY"
+            android:src="@drawable/people_transparent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:text="@string/home_hood"
+            android:textColor="@color/navyBlue"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/reports_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/home_btns"
+            android:backgroundTint="@color/lightOrange"
+            android:drawableTop="@drawable/baseline_insert_chart_outlined_black_48dp"
+            android:drawablePadding="-15dp"
+            android:paddingTop="5dp"
+            android:text="@string/reports"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+
+
+            app:layout_constraintBottom_toTopOf="@id/announcements_btn"
+            app:layout_constraintLeft_toLeftOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/profile_btn"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+
+        <Button
+            android:id="@+id/profile_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/home_btns"
+            android:backgroundTint="@color/skyBlue"
+            android:drawableTop="@drawable/baseline_person_black_48dp"
+            android:drawablePadding="-15dp"
+            android:paddingTop="5dp"
+            android:text="@string/profile"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+
+
+            app:layout_constraintBottom_toTopOf="@id/announcements_btn"
+            app:layout_constraintLeft_toRightOf="@id/reports_btn"
+            app:layout_constraintRight_toLeftOf="@id/exit_btn"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+        <Button
+            android:id="@+id/exit_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/home_btns"
+            android:backgroundTint="@color/orange"
+            android:drawableTop="@drawable/baseline_exit_to_app_black_48dp"
+            android:drawablePadding="-40dp"
+            android:gravity="center"
+            android:paddingTop="40dp"
+            android:text="@string/exit"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+
+
+
+            app:layout_constraintBottom_toTopOf="@id/payments_btn"
+            app:layout_constraintLeft_toRightOf="@id/profile_btn"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+        <Button
+            android:id="@+id/announcements_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/home_btns"
+            android:backgroundTint="@color/midBlue"
+            android:drawableTop="@drawable/baseline_notifications_active_black_48dp"
+            android:drawablePadding="-15dp"
+            android:paddingTop="5dp"
+            android:text="@string/announcements"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+
+            app:layout_constraintBottom_toTopOf="@id/expenses_btn"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/exit_btn"
+            app:layout_constraintTop_toBottomOf="@id/reports_btn"
+
+            />
+
+
+        <Button
+            android:id="@+id/expenses_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/home_btns"
+            android:backgroundTint="@color/lightOrange"
+            android:drawableTop="@drawable/baseline_list_black_48dp"
+            android:drawablePadding="-15dp"
+            android:paddingTop="5dp"
+            android:text="@string/expenses"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+
+
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_bottom_guid"
+            app:layout_constraintLeft_toRightOf="@id/vertical_left_guid"
+            app:layout_constraintRight_toLeftOf="@id/payments_btn"
+            app:layout_constraintTop_toBottomOf="@id/announcements_btn" />
+
+        <Button
+            android:id="@+id/payments_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/home_btns"
+            android:backgroundTint="@color/skyBlue"
+            android:drawableTop="@drawable/baseline_monetization_on_black_48dp"
+            android:drawablePadding="-10dp"
+            android:paddingTop="5dp"
+            android:text="@string/payments"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+
+
+            app:layout_constraintBottom_toBottomOf="@id/horizontal_bottom_guid"
+            app:layout_constraintLeft_toRightOf="@id/expenses_btn"
+            app:layout_constraintRight_toLeftOf="@id/vertical_right_guid"
+            app:layout_constraintTop_toBottomOf="@id/announcements_btn"
+
+            />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_left_guid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".1"
+
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_right_guid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".9"
+
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_bottom_guid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".87" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
