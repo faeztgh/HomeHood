@@ -33,8 +33,9 @@
     <string name="expenseType">Expense Type</string>
     <string name="save">Save</string>
     <string name="new_expense">New Expense</string>
-<string name="dateExample">"2020-10-01"</string>
-
+    <string name="dateExample">"2020-10-01"</string>
+    <string name="export_data">Export</string>
+    <string name="import_data">Import</string>
     <string-array name="expenseTypes">
 
         <item>Repairs</item>

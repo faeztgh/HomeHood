@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -50,6 +50,7 @@
             android:inputType="text"
             android:textColor="@color/black"
             android:textSize="15sp"
+            android:text="ali.g"
             />
 
         <EditText
@@ -63,6 +64,7 @@
             android:textColor="@color/black"
             android:inputType="textPassword"
             android:textSize="15sp"
+            android:text="123456"
 
             />
 

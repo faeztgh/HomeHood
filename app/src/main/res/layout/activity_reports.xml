@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightBlue_bg"
-    android:orientation="vertical">
 
+    android:orientation="vertical"
+
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -23,7 +24,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/expenses"
+                android:text="@string/reports"
                 android:textColor="@color/white"
                 android:textSize="25sp"
 
@@ -33,18 +34,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/addNewExpense_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/add_btn"
-
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/vertical_guid_right"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/expenses_back_iv"
+                android:id="@+id/reports_back_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/back_arrow"
@@ -63,12 +53,35 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/expenses_recycler_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        />
+
+        <Button
+            android:id="@+id/export_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/navyBlue"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="@string/export_data"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/import_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@color/navyBlue"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="@string/import_data"
+            android:textColor="@color/white"
+
+            />
+    </LinearLayout>
 
 </LinearLayout>
