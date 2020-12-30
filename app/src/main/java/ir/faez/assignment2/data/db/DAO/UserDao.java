@@ -1,0 +1,25 @@
+package ir.faez.assignment2.data.db.DAO;
+
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
+import java.util.List;
+
+import ir.faez.assignment2.data.model.User;
+
+@Dao
+public interface UserDao {
+    @Insert
+    long insert(User user);
+
+    @Update
+    int update(User user);
+
+    @Query("DELETE FROM user where id= :id")
+    int delete(long id);
+
+    @Query("SELECT * FROM user")
+    List<User> getAllUsers();
+}

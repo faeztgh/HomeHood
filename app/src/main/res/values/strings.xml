@@ -26,7 +26,15 @@
     <string name="full_name">Full Name</string>
     <string name="close">close</string>
     <string name="confirmation_type">Confirmation type</string>
+    <string name="somethingWentWrong">Something went wrong :(</string>
+    <string name="somethingWentWrongOnInsert">Something went wrong on insert :(</string>
+    <string name="somethingWentWrongOnUpdate">Something went wrong on update:(</string>
+    <string name="somethingWentWrongOnDelete">Something went wrong on delete :(</string>
+    <string name="wrongUserNameOrPassword">Wrong username or password!</string>
 
+    <string name="successfulRegister">You Signed up Successfully!</string>
+    <string name="cantGetUsersFromDb">Can\'t read users from Db!</string>
+    <string name="cantSignUpError">Can\'t sign up, please try again!</string>
     <string name="title">Title</string>
     <string name="amount">Amount</string>
     <string name="paymentDate">Payment Date</string>

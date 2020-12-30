@@ -11,16 +11,22 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import ir.faez.assignment2.utils.PreferencesManager;
+import java.util.List;
+
 import ir.faez.assignment2.R;
+import ir.faez.assignment2.data.async.GetUsersAsyncTask;
+import ir.faez.assignment2.data.db.DAO.DbResponse;
+import ir.faez.assignment2.data.model.User;
 import ir.faez.assignment2.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_CODE = 1;
+    public static User currUser;
     private String userName;
     private String password;
     private ActivityMainBinding binding;
-    private SharedPreferences preferences;
+    private SharedPreferences preferences;//TODO
+    private List<User> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +42,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        // get all users from DB
+        getUsers();
+        // init username and password fields
+        userName = binding.usernameEdt.getText().toString();
+        password = binding.passwordEdt.getText().toString();
         // invoke Listeners
         invokeOnClickListeners();
+    }
+
+    private void getUsers() {
+        GetUsersAsyncTask getUsersAsyncTask = new GetUsersAsyncTask(this, new DbResponse<List<User>>() {
+            @Override
+            public void onSuccess(List<User> loadedUsers) {
+                users = loadedUsers;
+            }
+
+            @Override
+            public void onError(Error error) {
+                Toast.makeText(MainActivity.this, R.string.cantGetUsersFromDb, Toast.LENGTH_SHORT).show();
+            }
+        });
+        getUsersAsyncTask.execute();
     }
 
     private void invokeOnClickListeners() {
@@ -48,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //-------------------------------- Implementing Buttons --------------------------------------------
     private void registerBtn() {
         Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-       startActivity(intent);
+        startActivity(intent);
     }
 
 
@@ -58,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             finish();
         }
+
     }
     // ----------------------------------- Check Validations ---------------------------------------
 
@@ -85,18 +112,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean isAuth() {
         loadData();
-        if (isUsernameValid()
-                && isPasswordValid()
-                && binding.usernameEdt.getText().toString().equals(userName)
-                && binding.passwordEdt.getText().toString().equals(password)) {
-            return true;
+
+        if (currUser != null) {
+
+            if (isUsernameValid()
+                    && isPasswordValid()
+                    && userName.equals(currUser.getUserName())
+                    && password.equals(currUser.getPassword())) {
+                return true;
+            } else {
+                Toast.makeText(MainActivity.this,
+                        R.string.wrongUserNameOrPassword,
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            }
         } else {
-            Toast.makeText(MainActivity.this,
-                    "Wrong username or password!",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.wrongUserNameOrPassword, Toast.LENGTH_SHORT).show();
             return false;
         }
-
 
     }
 
@@ -129,10 +162,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadData() {
-        PreferencesManager preferencesManager = PreferencesManager.getInstance(getApplicationContext());
-        userName = preferencesManager.get(PreferencesManager.PREF_KEY_USERNAME, "");
-        password = preferencesManager.get(PreferencesManager.PREF_KEY_PASSWORD, "");
 
+        currUser = getUserByUsername(binding.usernameEdt.getText().toString().trim());
+
+
+    }
+
+    private User getUserByUsername(String userName) {
+        for (User user : users) {
+            if (user.getUserName().equals(userName)) {
+                return user;
+            }
+        }
+        return null;
     }
 }
 

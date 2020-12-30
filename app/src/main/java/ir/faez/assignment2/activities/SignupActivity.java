@@ -8,9 +8,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import ir.faez.assignment2.utils.PreferencesManager;
 import ir.faez.assignment2.R;
+import ir.faez.assignment2.data.async.CudAsyncTask;
+import ir.faez.assignment2.data.db.DAO.DbResponse;
+import ir.faez.assignment2.data.model.User;
 import ir.faez.assignment2.databinding.ActivitySignupBinding;
+import ir.faez.assignment2.utils.Action;
+import ir.faez.assignment2.utils.PreferencesManager;
 
 import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_ADDRESS;
 import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_CONFIRM_PASSWORD;
@@ -31,7 +35,6 @@ public class SignupActivity
 
     private ActivitySignupBinding binding;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,7 @@ public class SignupActivity
         invokeOnFocusListeners();
         invokeOnClickListeners();
     }
+
 
     private void invokeOnClickListeners() {
         binding.confirmBtn.setOnClickListener(this);
@@ -177,6 +181,17 @@ public class SignupActivity
 
 
     private void registerBtn() {
+        String name = binding.firstnameEdt.getText().toString().trim();
+        String lastName = binding.lastnameEdt.getText().toString().trim();
+        String phoneNo = binding.mobileEdt.getText().toString().trim();
+        String email = binding.emailEdt.getText().toString().trim();
+        String userName = binding.usernameEdt.getText().toString().trim();
+        String password = binding.passwordEdt.getText().toString().trim();
+        String confirmPassword = binding.confirmPasswordEdt.getText().toString().trim();
+        String address = binding.addressEdt.getText().toString();
+        int numberOfUnits = Integer.parseInt(binding.numberOfUnitsEdt.getText().toString().trim());
+        boolean smsChkbx = binding.emailChkbx.isChecked();
+        boolean emailChkbx = binding.smsChkbx.isChecked();
 
         if (isInputsFilled()
                 && isEmailValid()
@@ -186,23 +201,44 @@ public class SignupActivity
 
             PreferencesManager preferencesManager = PreferencesManager.getInstance(getApplicationContext());
 
-            preferencesManager.put(PREF_KEY_NAME, binding.firstnameEdt.getText().toString().trim());
-            preferencesManager.put(PREF_KEY_LASTNAME, binding.lastnameEdt.getText().toString().trim());
-            preferencesManager.put(PREF_KEY_MOBILE, binding.mobileEdt.getText().toString().trim());
-            preferencesManager.put(PREF_KEY_EMAIL, binding.emailEdt.getText().toString().trim());
-            preferencesManager.put(PREF_KEY_USERNAME, binding.usernameEdt.getText().toString().trim());
-            preferencesManager.put(PREF_KEY_PASSWORD, binding.passwordEdt.getText().toString().trim());
-            preferencesManager.put(PREF_KEY_CONFIRM_PASSWORD, binding.confirmPasswordEdt.getText().toString().trim());
-            preferencesManager.put(PREF_KEY_ADDRESS, binding.addressEdt.getText().toString());
-            preferencesManager.put(PREF_KEY_NUMBER_OF_UNITS, Integer.parseInt(binding.numberOfUnitsEdt.getText().toString().trim()));
-            preferencesManager.put(PREF_KEY_EMAIL_CHKBX, binding.emailChkbx.isChecked());
-            preferencesManager.put(PREF_KEY_SMS_CHKBX, binding.smsChkbx.isChecked());
+            preferencesManager.put(PREF_KEY_NAME, name);
+            preferencesManager.put(PREF_KEY_LASTNAME, lastName);
+            preferencesManager.put(PREF_KEY_MOBILE, phoneNo);
+            preferencesManager.put(PREF_KEY_EMAIL, email);
+            preferencesManager.put(PREF_KEY_USERNAME, userName);
+            preferencesManager.put(PREF_KEY_PASSWORD, password);
+            preferencesManager.put(PREF_KEY_CONFIRM_PASSWORD, confirmPassword);
+            preferencesManager.put(PREF_KEY_ADDRESS, address);
+            preferencesManager.put(PREF_KEY_NUMBER_OF_UNITS, numberOfUnits);
+            preferencesManager.put(PREF_KEY_EMAIL_CHKBX, emailChkbx);
+            preferencesManager.put(PREF_KEY_SMS_CHKBX, smsChkbx);
             Toast.makeText(this, "You Registered Successfully!", Toast.LENGTH_LONG).show();
 
 
             finish();
 
+
+            //** Implementing database **//
+
+
+            CudAsyncTask cudAsyncTask = new CudAsyncTask(this, Action.INSERT_ACTION, new DbResponse<User>() {
+                @Override
+                public void onSuccess(User user) {
+                    Toast.makeText(SignupActivity.this, R.string.successfulRegister, Toast.LENGTH_SHORT).show();
+                    //TODO for test
+
+                }
+
+                @Override
+                public void onError(Error error) {
+                    Toast.makeText(SignupActivity.this, R.string.cantSignUpError, Toast.LENGTH_SHORT).show();
+                }
+            });
+            User user = new User(name, lastName, phoneNo, email, userName, password, address, numberOfUnits, smsChkbx, emailChkbx);
+            cudAsyncTask.execute(user);
+
         }
+
 
     }
 

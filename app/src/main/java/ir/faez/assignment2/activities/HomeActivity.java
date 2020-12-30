@@ -10,8 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import ir.faez.assignment2.utils.PreferencesManager;
 import ir.faez.assignment2.R;
+import ir.faez.assignment2.data.model.User;
 import ir.faez.assignment2.databinding.ActivityHomeBinding;
 import ir.faez.assignment2.databinding.DialogWindowBinding;
 
@@ -47,6 +47,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // invoke Listeners
         invokeOnClickListeners();
     }
+
 
     // invoke Listeners
     private void invokeOnClickListeners() {
@@ -138,17 +139,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     //------------------------------------- Others -------------------------------------------------
     private void loadData() {
-        PreferencesManager preferencesManager = PreferencesManager.getInstance(getApplicationContext());
-        firstName = preferencesManager.get(PreferencesManager.PREF_KEY_NAME, "");
-        lastName = preferencesManager.get(PreferencesManager.PREF_KEY_LASTNAME, "");
+        User user = MainActivity.currUser;
+        firstName = user.getName();
+        lastName = user.getLastName();
         fullName = firstName + " " + lastName;
-        userName = preferencesManager.get(PreferencesManager.PREF_KEY_USERNAME, "");
-        email = preferencesManager.get(PreferencesManager.PREF_KEY_EMAIL, "");
-        mobile = preferencesManager.get(PreferencesManager.PREF_KEY_MOBILE, "");
-        address = preferencesManager.get(PreferencesManager.PREF_KEY_ADDRESS, "");
-        numberOfUnits = preferencesManager.get(PreferencesManager.PREF_KEY_NUMBER_OF_UNITS, 0);
-        emailCheckbox = preferencesManager.get(PreferencesManager.PREF_KEY_EMAIL_CHKBX, true);
-        smsCheckbox = preferencesManager.get(PreferencesManager.PREF_KEY_SMS_CHKBX, true);
+        userName = user.getUserName();
+        email = user.getEmail();
+        mobile = user.getPhoneNo();
+        address = user.getFullAddress();
+        numberOfUnits = user.getNumberOfUnit();
+        emailCheckbox = user.isSmsChkbx();
+        smsCheckbox = user.isEmailChkbx();
         if (emailCheckbox) {
             confirmationType += " Email ";
         }
