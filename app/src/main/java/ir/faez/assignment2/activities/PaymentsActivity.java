@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ir.faez.assignment2.beans.Expense;
+import ir.faez.assignment2.data.model.Expense;
 import ir.faez.assignment2.utils.ExpenseAdapter;
 import ir.faez.assignment2.utils.OnExpenseClickListener;
 import ir.faez.assignment2.R;

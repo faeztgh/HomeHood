@@ -32,6 +32,10 @@
     <string name="somethingWentWrongOnDelete">Something went wrong on delete :(</string>
     <string name="wrongUserNameOrPassword">Wrong username or password!</string>
 
+    <string name="newExpenseAdded">New Expense Added!</string>
+    <string name="cantAddNewExpense">Can\'t add new Expense :(</string>
+    <string name="cantGetExpensesFromDb">Can\'t read Expenses from Db!</string>
+
     <string name="successfulRegister">You Signed up Successfully!</string>
     <string name="cantGetUsersFromDb">Can\'t read users from Db!</string>
     <string name="cantSignUpError">Can\'t sign up, please try again!</string>

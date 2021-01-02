@@ -9,24 +9,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ir.faez.assignment2.R;
-import ir.faez.assignment2.data.async.CudAsyncTask;
+import ir.faez.assignment2.data.async.UserCudAsyncTask;
 import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.User;
 import ir.faez.assignment2.databinding.ActivitySignupBinding;
 import ir.faez.assignment2.utils.Action;
-import ir.faez.assignment2.utils.PreferencesManager;
-
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_ADDRESS;
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_CONFIRM_PASSWORD;
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_EMAIL;
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_EMAIL_CHKBX;
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_LASTNAME;
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_MOBILE;
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_NAME;
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_NUMBER_OF_UNITS;
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_PASSWORD;
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_SMS_CHKBX;
-import static ir.faez.assignment2.utils.PreferencesManager.PREF_KEY_USERNAME;
 
 
 public class SignupActivity
@@ -199,29 +186,26 @@ public class SignupActivity
                 && isPasswordValid()
                 && isConfirmPasswordValid()) {
 
-            PreferencesManager preferencesManager = PreferencesManager.getInstance(getApplicationContext());
-
-            preferencesManager.put(PREF_KEY_NAME, name);
-            preferencesManager.put(PREF_KEY_LASTNAME, lastName);
-            preferencesManager.put(PREF_KEY_MOBILE, phoneNo);
-            preferencesManager.put(PREF_KEY_EMAIL, email);
-            preferencesManager.put(PREF_KEY_USERNAME, userName);
-            preferencesManager.put(PREF_KEY_PASSWORD, password);
-            preferencesManager.put(PREF_KEY_CONFIRM_PASSWORD, confirmPassword);
-            preferencesManager.put(PREF_KEY_ADDRESS, address);
-            preferencesManager.put(PREF_KEY_NUMBER_OF_UNITS, numberOfUnits);
-            preferencesManager.put(PREF_KEY_EMAIL_CHKBX, emailChkbx);
-            preferencesManager.put(PREF_KEY_SMS_CHKBX, smsChkbx);
-            Toast.makeText(this, "You Registered Successfully!", Toast.LENGTH_LONG).show();
-
-
-            finish();
+//            PreferencesManager preferencesManager = PreferencesManager.getInstance(getApplicationContext());
+//
+//            preferencesManager.put(PREF_KEY_NAME, name);
+//            preferencesManager.put(PREF_KEY_LASTNAME, lastName);
+//            preferencesManager.put(PREF_KEY_MOBILE, phoneNo);
+//            preferencesManager.put(PREF_KEY_EMAIL, email);
+//            preferencesManager.put(PREF_KEY_USERNAME, userName);
+//            preferencesManager.put(PREF_KEY_PASSWORD, password);
+//            preferencesManager.put(PREF_KEY_CONFIRM_PASSWORD, confirmPassword);
+//            preferencesManager.put(PREF_KEY_ADDRESS, address);
+//            preferencesManager.put(PREF_KEY_NUMBER_OF_UNITS, numberOfUnits);
+//            preferencesManager.put(PREF_KEY_EMAIL_CHKBX, emailChkbx);
+//            preferencesManager.put(PREF_KEY_SMS_CHKBX, smsChkbx);
+//            Toast.makeText(this, "You Registered Successfully!", Toast.LENGTH_LONG).show();
 
 
             //** Implementing database **//
 
 
-            CudAsyncTask cudAsyncTask = new CudAsyncTask(this, Action.INSERT_ACTION, new DbResponse<User>() {
+            UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(this, Action.INSERT_ACTION, new DbResponse<User>() {
                 @Override
                 public void onSuccess(User user) {
                     Toast.makeText(SignupActivity.this, R.string.successfulRegister, Toast.LENGTH_SHORT).show();
@@ -235,10 +219,11 @@ public class SignupActivity
                 }
             });
             User user = new User(name, lastName, phoneNo, email, userName, password, address, numberOfUnits, smsChkbx, emailChkbx);
-            cudAsyncTask.execute(user);
+            userCudAsyncTask.execute(user);
 
         }
 
+        finish();
 
     }
 

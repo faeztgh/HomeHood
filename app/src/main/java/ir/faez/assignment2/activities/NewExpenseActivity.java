@@ -14,9 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.Serializable;
 import java.util.Calendar;
 
-import ir.faez.assignment2.beans.Expense;
 import ir.faez.assignment2.R;
+import ir.faez.assignment2.data.async.ExpenseCudAsyncTask;
+import ir.faez.assignment2.data.db.DAO.DbResponse;
+import ir.faez.assignment2.data.model.Expense;
 import ir.faez.assignment2.databinding.ActivityNewExpenseBinding;
+import ir.faez.assignment2.utils.Action;
+
+//import ir.faez.assignment2.data.async.ExpenseCudAsyncTask;
 
 
 public class NewExpenseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
@@ -108,7 +113,25 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         paymentDateTv = binding.newExpenseDatePickerTv.getText().toString();
 
         if (!titleEt.isEmpty() && !amountEt.isEmpty() && !paymentDateTv.isEmpty()) {
-            Expense exp = new Expense(titleEt, amountEt, paymentDateTv, expenseTypeSp);
+//
+            // implementing db
+            ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(this, Action.INSERT_ACTION, new DbResponse<Expense>() {
+                @Override
+                public void onSuccess(Expense expense) {
+                    Toast.makeText(NewExpenseActivity.this, R.string.newExpenseAdded, Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onError(Error error) {
+                    Toast.makeText(NewExpenseActivity.this, R.string.cantAddNewExpense, Toast.LENGTH_SHORT).show();
+
+                }
+            });
+            Expense exp = new Expense(MainActivity.currUser.getId(), titleEt, amountEt, paymentDateTv, expenseTypeSp);
+
+            expenseCudAsyncTask.execute(exp);
+            // send data back to update the prev activity
             Intent intent = new Intent();
             intent.putExtra(EXTRA_MESSAGE, (Serializable) exp);
             setResult(RESULT_OK, intent);

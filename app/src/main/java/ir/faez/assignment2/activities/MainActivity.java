@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -44,9 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(view);
         // get all users from DB
         getUsers();
-        // init username and password fields
-        userName = binding.usernameEdt.getText().toString();
-        password = binding.passwordEdt.getText().toString();
+
         // invoke Listeners
         invokeOnClickListeners();
     }
@@ -79,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void signInBtn() {
+
         if (isAuth()) {
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
@@ -115,11 +115,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (currUser != null) {
 
-            if (isUsernameValid()
-                    && isPasswordValid()
-                    && userName.equals(currUser.getUserName())
-                    && password.equals(currUser.getPassword())) {
-                return true;
+            if (isUsernameValid() && isPasswordValid()) {
+
+                if (userName.equals(currUser.getUserName()) && password.equals(currUser.getPassword())) {
+
+                    return true;
+                } else {
+                    Toast.makeText(this, R.string.wrongUserNameOrPassword, Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             } else {
                 Toast.makeText(MainActivity.this,
                         R.string.wrongUserNameOrPassword,
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         } else {
-            Toast.makeText(this, R.string.wrongUserNameOrPassword, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "User not exist!", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -164,12 +168,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void loadData() {
 
         currUser = getUserByUsername(binding.usernameEdt.getText().toString().trim());
-
-
+        // init username and password fields
+        userName = binding.usernameEdt.getText().toString();
+        password = binding.passwordEdt.getText().toString();
     }
 
     private User getUserByUsername(String userName) {
         for (User user : users) {
+
             if (user.getUserName().equals(userName)) {
                 return user;
             }

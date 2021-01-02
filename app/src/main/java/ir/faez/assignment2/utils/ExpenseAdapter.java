@@ -18,7 +18,9 @@ import ir.faez.assignment2.R;
 import ir.faez.assignment2.activities.ExpensesActivity;
 import ir.faez.assignment2.activities.NewExpenseActivity;
 import ir.faez.assignment2.activities.PaymentsActivity;
-import ir.faez.assignment2.beans.Expense;
+import ir.faez.assignment2.data.async.ExpenseCudAsyncTask;
+import ir.faez.assignment2.data.db.DAO.DbResponse;
+import ir.faez.assignment2.data.model.Expense;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHolder> {
 
@@ -60,13 +62,33 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
     // this method called from other activities to remove an item from recyclerView
     public void removeItem(int position) {
+        // removing from DB
+
+
+        Expense removedExpense = expenses.get(position);
+        ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(context, Action.DELETE_ACTION, new DbResponse<Expense>() {
+            @Override
+            public void onSuccess(Expense expense) {
+
+            }
+
+            @Override
+            public void onError(Error error) {
+                //TODO
+            }
+        });
+        if (removedExpense != null) {
+            expenseCudAsyncTask.execute(removedExpense);
+        }
         // removing an item from the arrayList
         expenses.remove(position);
         // notify to change the index of items in array and prevent crash
         notifyItemRangeChanged(position, getItemCount());
         // notify to layout that item is removed and should be update
         notifyItemRemoved(position);
+
     }
+
 
     // this method called from other activities to add an item to recyclerView
     public void payItem(int position, String activityName) {
@@ -82,6 +104,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
             case "EXPENSES":
                 // adding an item to the arrayList
+
                 PaymentsActivity.getPaymentsExpenseList().add(expenses.get(position));
                 // notify to change the index of items in array and prevent crash
                 notifyItemRangeChanged(position, getItemCount());
@@ -89,6 +112,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
                 break;
         }
     }
+
 
     //---------------------------------------------------------------------
 

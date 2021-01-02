@@ -21,7 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 
 import ir.faez.assignment2.R;
-import ir.faez.assignment2.beans.Expense;
+import ir.faez.assignment2.data.model.Expense;
 import ir.faez.assignment2.databinding.ActivityReportsBinding;
 import ir.faez.assignment2.utils.FileAccessHelper;
 
