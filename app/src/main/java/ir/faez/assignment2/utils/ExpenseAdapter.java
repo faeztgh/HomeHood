@@ -2,11 +2,13 @@ package ir.faez.assignment2.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,9 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ir.faez.assignment2.R;
-import ir.faez.assignment2.activities.ExpensesActivity;
 import ir.faez.assignment2.activities.NewExpenseActivity;
-import ir.faez.assignment2.activities.PaymentsActivity;
 import ir.faez.assignment2.data.async.ExpenseCudAsyncTask;
 import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.Expense;
@@ -62,30 +62,32 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
     // this method called from other activities to remove an item from recyclerView
     public void removeItem(int position) {
+
+        // notify to change the index of items in array and prevent crash
+        notifyItemRangeChanged(position, getItemCount());
+
+
+        Log.i("FAEZ_TEST", "outside"+"\nsize: " + expenses.size() + "\nitem: "  + "\nitemCount: " + getItemCount());
         // removing from DB
-
-
         Expense removedExpense = expenses.get(position);
         ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(context, Action.DELETE_ACTION, new DbResponse<Expense>() {
             @Override
             public void onSuccess(Expense expense) {
 
+
+                //remove from ui
+                removeItemFromUi(position);
             }
 
             @Override
             public void onError(Error error) {
-                //TODO
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
         if (removedExpense != null) {
             expenseCudAsyncTask.execute(removedExpense);
         }
-        // removing an item from the arrayList
-        expenses.remove(position);
-        // notify to change the index of items in array and prevent crash
-        notifyItemRangeChanged(position, getItemCount());
-        // notify to layout that item is removed and should be update
-        notifyItemRemoved(position);
+
 
     }
 
@@ -95,24 +97,67 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
         switch (activityName) {
             case "PAYMENTS":
-                // adding an item to the arrayList
-                ExpensesActivity.getExpensesList().add(expenses.get(position));
-                // notify to change the index of items in array and prevent crash
-                notifyItemRangeChanged(position, getItemCount());
-                removeItem(position);
+                paymentsImpl(position);
                 break;
 
             case "EXPENSES":
-                // adding an item to the arrayList
-
-                PaymentsActivity.getPaymentsExpenseList().add(expenses.get(position));
-                // notify to change the index of items in array and prevent crash
-                notifyItemRangeChanged(position, getItemCount());
-                removeItem(position);
+                expensesImpl(position);
                 break;
         }
     }
 
+    private void expensesImpl(int position) {
+        // notify to change the index of items in array and prevent crash
+        notifyItemRangeChanged(position, getItemCount());
+
+        // implementing update expense status to db
+        Expense expense = expenses.get(position);
+        expense.setStatus(Status.payments);
+        ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(context, Action.UPDATE_ACTION, new DbResponse<Expense>() {
+            @Override
+            public void onSuccess(Expense expense) {
+                removeItemFromUi(position);
+            }
+
+            @Override
+            public void onError(Error error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        expenseCudAsyncTask.execute(expense);
+    }
+
+    private void paymentsImpl(int position) {
+        // notify to change the index of items in array and prevent crash
+        notifyItemRangeChanged(position, getItemCount());
+
+        // implementing update expense status to db
+        Expense expense = expenses.get(position);
+        expense.setStatus(Status.expenses);
+        ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(context, Action.UPDATE_ACTION, new DbResponse<Expense>() {
+            @Override
+            public void onSuccess(Expense expense) {
+                removeItemFromUi(position);
+            }
+
+            @Override
+            public void onError(Error error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        expenseCudAsyncTask.execute(expense);
+
+
+    }
+
+    private void removeItemFromUi(int position) {
+        // removing an item from the arrayList
+        expenses.remove(position);
+        // notify to change the index of items in array and prevent crash
+        notifyItemRangeChanged(position, getItemCount());
+        // notify to layout that item is removed and should be update
+        notifyItemRemoved(position);
+    }
 
     //---------------------------------------------------------------------
 
@@ -181,10 +226,10 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
             //setting item button icon
             switch (activityName) {
-                case "PAYMENTS":
+                case Status.payments:
                     payIv.setImageResource(R.drawable.done_icon);
                     break;
-                case "EXPENSES":
+                case Status.expenses:
                     payIv.setImageResource(R.drawable.dollar_icon);
                     break;
             }

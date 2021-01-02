@@ -36,6 +36,26 @@
     <string name="cantAddNewExpense">Can\'t add new Expense :(</string>
     <string name="cantGetExpensesFromDb">Can\'t read Expenses from Db!</string>
 
+    <string name="inappropriateInput">Inappropriate input!</string>
+    <string name="itemRemoved">Item Removed</string>
+    <string name="itemPayedSuccessfully">Item Payed Successfully!</string>
+    <string name="optionNotImplYet">this option is not implemented yet!</string>
+    <string name="emptyUsernameField">UserName field is EMPTY!</string>
+    <string name="emptyPasswordField">Password field is EMPTY!</string>
+    <string name="userNotExist">User not exist!</string>
+    <string name="fill">Fill!</string>
+    <string name="itemCheckedSuccessfully">Item Checked Successfully!</string>
+    <string name="filePathNotSet">File Path Not Set!</string>
+    <string name="filePathNotFound">File Path Not Found!</string>
+    <string name="youAreNotPermittedToReadThisFile">You Not Permitted To Read This File!</string>
+    <string name="exportingFileDoneSuccessfully">Exporting File Done Successfully!</string>
+    <string name="importingFileDoneSuccessfully">Importing File Done Successfully!</string>
+    <string name="externalStorageNotReadyToUse">External Storage Not Ready To Use!</string>
+    <string name="fileNotExist">File Not Exist!</string>
+    <string name="problemToReadFromFile">Problem To Read From File!</string>
+    <string name="problemToWriteOnFile">Problem To Write On File!</string>
+    <string name="errorMessageNotExist">Error Message Not Exist!</string>
+
     <string name="successfulRegister">You Signed up Successfully!</string>
     <string name="cantGetUsersFromDb">Can\'t read users from Db!</string>
     <string name="cantSignUpError">Can\'t sign up, please try again!</string>

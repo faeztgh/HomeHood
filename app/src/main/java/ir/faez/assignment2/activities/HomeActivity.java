@@ -88,8 +88,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void invokeAnnouncementsBtn() {
-        Toast.makeText(this,
-                "this option is not implemented yet!",
+        Toast.makeText(this, R.string.optionNotImplYet
+                ,
                 Toast.LENGTH_SHORT).show();
 
 
@@ -131,7 +131,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             default:
                 Toast.makeText(this,
-                        "Inappropriate Input!",
+                        R.string.inappropriateInput,
                         Toast.LENGTH_SHORT).show();
         }
     }

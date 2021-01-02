@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+import ir.faez.assignment2.R;
+
 public class FileAccessHelper {
     //Instance Fields
     public static final int EXTERNAL_STORAGE_NOT_READY_ERROR_CODE = 1;
@@ -104,22 +106,22 @@ public class FileAccessHelper {
         String errorMessage;
         switch (errorCode) {
             case EXTERNAL_STORAGE_NOT_READY_ERROR_CODE:
-                errorMessage = "External Storage Not Ready To Use!";
+                errorMessage = String.valueOf(R.string.externalStorageNotReadyToUse);
                 break;
             case FILE_DOES_NOT_EXIST_ERROR_CODE:
-                errorMessage = "File Not Exist!";
+                errorMessage = String.valueOf(R.string.fileNotExist);
                 break;
             case FILE_READ_ERROR_CODE:
-                errorMessage = "Problem To Read From File!";
+                errorMessage = String.valueOf(R.string.problemToReadFromFile);
                 break;
             case FILE_WRITE_ERROR_CODE:
-                errorMessage = "Problem To Wite On File!";
+                errorMessage = String.valueOf(R.string.problemToWriteOnFile);
                 break;
             case FILE_PATH_NOT_PROVIDED:
-                errorMessage = "Path Not Found!";
+                errorMessage = String.valueOf(R.string.filePathNotFound);
                 break;
             default:
-                errorMessage = "Error Message Not Exist!";
+                errorMessage = String.valueOf(R.string.errorMessageNotExist);
         }
         return errorMessage;
     }

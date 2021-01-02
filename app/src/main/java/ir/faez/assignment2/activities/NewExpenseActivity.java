@@ -20,6 +20,7 @@ import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.Expense;
 import ir.faez.assignment2.databinding.ActivityNewExpenseBinding;
 import ir.faez.assignment2.utils.Action;
+import ir.faez.assignment2.utils.Status;
 
 //import ir.faez.assignment2.data.async.ExpenseCudAsyncTask;
 
@@ -98,7 +99,7 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
                 break;
             default:
                 Toast.makeText(NewExpenseActivity.this,
-                        "Inappropriate input!",
+                        R.string.inappropriateInput,
                         Toast.LENGTH_SHORT).show();
         }
     }
@@ -115,11 +116,15 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         if (!titleEt.isEmpty() && !amountEt.isEmpty() && !paymentDateTv.isEmpty()) {
 //
             // implementing db
+            Expense exp = new Expense(MainActivity.currUser.getId(), titleEt, amountEt, paymentDateTv, expenseTypeSp, Status.expenses);
+
             ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(this, Action.INSERT_ACTION, new DbResponse<Expense>() {
                 @Override
                 public void onSuccess(Expense expense) {
-                    Toast.makeText(NewExpenseActivity.this, R.string.newExpenseAdded, Toast.LENGTH_SHORT).show();
 
+
+                    Toast.makeText(NewExpenseActivity.this, R.string.newExpenseAdded, Toast.LENGTH_SHORT).show();
+                    finish();
                 }
 
                 @Override
@@ -128,14 +133,9 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
 
                 }
             });
-            Expense exp = new Expense(MainActivity.currUser.getId(), titleEt, amountEt, paymentDateTv, expenseTypeSp);
 
             expenseCudAsyncTask.execute(exp);
-            // send data back to update the prev activity
-            Intent intent = new Intent();
-            intent.putExtra(EXTRA_MESSAGE, (Serializable) exp);
-            setResult(RESULT_OK, intent);
-            finish();
+
         } else {
             binding.newExpenseTitleEt.setError("Fill!");
             binding.newExpenseAmountEt.setError("Fill!");

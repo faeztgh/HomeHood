@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -38,14 +37,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         init();
     }
 
+    // it will read new user that register right now.
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        // get all users from DB
+        getUsers();
+    }
+
     private void init() {
         // initializing binding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
         // get all users from DB
         getUsers();
-
         // invoke Listeners
         invokeOnClickListeners();
     }
@@ -93,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         } else {
             changeHint(binding.usernameEdt);
-            Toast.makeText(this, "UserName field is EMPTY!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.emptyUsernameField, Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -104,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         } else {
             changeHint(binding.passwordEdt);
-            Toast.makeText(this, "Password field is EMPTY!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.emptyPasswordField, Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -131,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         } else {
-            Toast.makeText(this, "User not exist!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.userNotExist, Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -148,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 registerBtn();
                 break;
             default:
-                Toast.makeText(this, "Inappropriate Input!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.inappropriateInput, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -174,8 +181,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private User getUserByUsername(String userName) {
-        for (User user : users) {
 
+        for (User user : users) {
             if (user.getUserName().equals(userName)) {
                 return user;
             }

@@ -73,13 +73,13 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         // ------------------------- read
         if (requestCode == READ_FILE_PICKER_REQUEST_CODE) {
             if (resultCode != RESULT_OK) {
-                Toast.makeText(this, "File Path Not Set!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.filePathNotSet, Toast.LENGTH_SHORT).show();
                 return;
             }
 
             fileUri = (data != null) ? data.getData() : null;
             if (fileUri == null) {
-                Toast.makeText(this, "File Path Not Set!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.filePathNotSet, Toast.LENGTH_SHORT).show();
                 return;
             }
             checkReadPermission();
@@ -87,13 +87,13 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
 
             //---------------------------- write
             if (resultCode != RESULT_OK) {
-                Toast.makeText(this, "File Path Not Set!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.filePathNotSet, Toast.LENGTH_SHORT).show();
                 return;
             }
 
             fileUri = (data != null) ? data.getData() : null;
             if (fileUri == null) {
-                Toast.makeText(this, "File Path Not Set!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.filePathNotSet, Toast.LENGTH_SHORT).show();
                 return;
             }
             checkWritePermission();
@@ -111,7 +111,7 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
             readFileProcess();
         } else {
-            Toast.makeText(this, "You Not Permitted To Read This File!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.youAreNotPermittedToReadThisFile, Toast.LENGTH_SHORT).show();
         }
 
         // ---------------------- write
@@ -142,7 +142,7 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
 
     private void writeFileProcess() {
         if (fileUri == null) {
-            Toast.makeText(this, "File Path Not Set!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.filePathNotSet, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -160,7 +160,7 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Toast.makeText(this, "Exporting File Done Successfully!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.exportingFileDoneSuccessfully, Toast.LENGTH_SHORT).show();
 
     }
     // ---------------------------------- Import ---------------------------------------------------
@@ -186,7 +186,7 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
 
     private void readFileProcess() {
         if (fileUri == null) {
-            Toast.makeText(this, "File Path Not Set!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.filePathNotSet, Toast.LENGTH_SHORT).show();
             return;
         }
         Pair<String, Integer> result = fileAccessHelper.readFile(fileUri);
@@ -209,7 +209,7 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Toast.makeText(this, "Importing File Done Successfully!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.importingFileDoneSuccessfully, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -231,7 +231,7 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             default:
                 Toast.makeText(ReportsActivity.this,
-                        "Inappropriate input!",
+                        R.string.inappropriateInput,
                         Toast.LENGTH_SHORT).show();
                 break;
         }

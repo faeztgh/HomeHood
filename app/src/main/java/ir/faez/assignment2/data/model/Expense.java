@@ -16,25 +16,27 @@ public class Expense implements Serializable {
     private String amount;
     private String paymentDate;
     private String expenseType;
-
+    private String status;
 
     //constructors
-    public Expense(long id, long ownerId, String title, String amount, String paymentDate, String expenseType) {
+    public Expense(long id, long ownerId, String title, String amount, String paymentDate, String expenseType, String status) {
         this.id = id;
         this.ownerId = ownerId;
         this.title = title;
         this.amount = amount;
         this.paymentDate = paymentDate;
         this.expenseType = expenseType;
+        this.status = status;
     }
 
     @Ignore
-    public Expense(long ownerId, String title, String amount, String paymentDate, String expenseType) {
+    public Expense(long ownerId, String title, String amount, String paymentDate, String expenseType, String status) {
         this.ownerId = ownerId;
         this.title = title;
         this.amount = amount;
         this.paymentDate = paymentDate;
         this.expenseType = expenseType;
+        this.status = status;
     }
 
     //-------------------------- Accessors -------------------------------------
@@ -65,5 +67,13 @@ public class Expense implements Serializable {
 
     public long getOwnerId() {
         return ownerId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

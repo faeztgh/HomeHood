@@ -2,12 +2,10 @@ package ir.faez.assignment2.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +19,7 @@ import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.Expense;
 import ir.faez.assignment2.utils.ExpenseAdapter;
 import ir.faez.assignment2.utils.OnExpenseClickListener;
+import ir.faez.assignment2.utils.Status;
 
 
 public class ExpensesActivity extends AppCompatActivity implements View.OnClickListener, OnExpenseClickListener {
@@ -52,6 +51,13 @@ public class ExpensesActivity extends AppCompatActivity implements View.OnClickL
         init();
     }
 
+    //refresh the list after new expense created
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getAllExpenses();
+
+    }
 
     // initializing things that should be handled at start
     private void init() {
@@ -96,28 +102,7 @@ public class ExpensesActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        try {
-
-            if (requestCode == REQUEST_CODE) {
-                if (resultCode == RESULT_OK) {
-                    assert data != null;
-                    Expense expRes = (Expense) data.getSerializableExtra("EXPENSE_OBJ");
-
-                    if (expensesList == null) {
-                        expensesList = new ArrayList<>();
-                    }
-                    expensesList.add(expensesList.size(), expRes);
-                    recyclerViewInit();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     //----------------------------- Implementing View.OnclickListener ------------------------------
     @Override
@@ -132,7 +117,7 @@ public class ExpensesActivity extends AppCompatActivity implements View.OnClickL
                 break;
             default:
                 Toast.makeText(ExpensesActivity.this,
-                        "Inappropriate input!",
+                        R.string.inappropriateInput,
                         Toast.LENGTH_SHORT).show();
                 break;
         }
@@ -149,17 +134,16 @@ public class ExpensesActivity extends AppCompatActivity implements View.OnClickL
     //------------------ OnExpenseListener Interface implementation --------------------------------
     @Override
     public void onItemRemoved(int position) {
-        Log.i("FAEZ_TEST", "onSuccess: " + expenseAdapter + "\n");
 
         expenseAdapter.removeItem(position);
-        Toast.makeText(this, "Item Removed!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.itemRemoved, Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onItemPayed(int position) {
         expenseAdapter.payItem(position, activityName);
-        Toast.makeText(this, "Item Payed Successfully!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.itemPayedSuccessfully, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -170,7 +154,7 @@ public class ExpensesActivity extends AppCompatActivity implements View.OnClickL
         if (allExpenses != null) {
             for (Expense exp : allExpenses) {
                 if (exp != null) {
-                    if (exp.getOwnerId() == MainActivity.currUser.getId()) {
+                    if (exp.getOwnerId() == MainActivity.currUser.getId() && exp.getStatus().equals(Status.expenses)) {
                         expensesList.add(exp);
                     }
                 }
