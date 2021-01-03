@@ -2,7 +2,6 @@ package ir.faez.assignment2.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,18 +62,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     // this method called from other activities to remove an item from recyclerView
     public void removeItem(int position) {
 
-        // notify to change the index of items in array and prevent crash
-        notifyItemRangeChanged(position, getItemCount());
-
-
-        Log.i("FAEZ_TEST", "outside"+"\nsize: " + expenses.size() + "\nitem: "  + "\nitemCount: " + getItemCount());
         // removing from DB
         Expense removedExpense = expenses.get(position);
         ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(context, Action.DELETE_ACTION, new DbResponse<Expense>() {
             @Override
             public void onSuccess(Expense expense) {
-
-
                 //remove from ui
                 removeItemFromUi(position);
             }
@@ -87,8 +79,6 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         if (removedExpense != null) {
             expenseCudAsyncTask.execute(removedExpense);
         }
-
-
     }
 
 
@@ -96,19 +86,17 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     public void payItem(int position, String activityName) {
 
         switch (activityName) {
-            case "PAYMENTS":
+            case Status.payments:
                 paymentsImpl(position);
                 break;
 
-            case "EXPENSES":
+            case Status.expenses:
                 expensesImpl(position);
                 break;
         }
     }
 
     private void expensesImpl(int position) {
-        // notify to change the index of items in array and prevent crash
-        notifyItemRangeChanged(position, getItemCount());
 
         // implementing update expense status to db
         Expense expense = expenses.get(position);
@@ -153,10 +141,10 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     private void removeItemFromUi(int position) {
         // removing an item from the arrayList
         expenses.remove(position);
-        // notify to change the index of items in array and prevent crash
-        notifyItemRangeChanged(position, getItemCount());
         // notify to layout that item is removed and should be update
         notifyItemRemoved(position);
+        // notify to change the index of items in array and prevent crash
+        notifyItemRangeChanged(position, getItemCount());
     }
 
     //---------------------------------------------------------------------

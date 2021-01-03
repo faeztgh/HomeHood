@@ -50,7 +50,7 @@
             android:inputType="text"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:text="ali.g"
+
             />
 
         <EditText
@@ -64,7 +64,7 @@
             android:textColor="@color/black"
             android:inputType="textPassword"
             android:textSize="15sp"
-            android:text="123456"
+
 
             />
 
