@@ -31,11 +31,11 @@
     <string name="somethingWentWrongOnUpdate">Something went wrong on update:(</string>
     <string name="somethingWentWrongOnDelete">Something went wrong on delete :(</string>
     <string name="wrongUserNameOrPassword">Wrong username or password!</string>
-
+    <string name="fillNumberOfUnits">Please fill number of units</string>
     <string name="newExpenseAdded">New Expense Added!</string>
     <string name="cantAddNewExpense">Can\'t add new Expense :(</string>
     <string name="cantGetExpensesFromDb">Can\'t read Expenses from Db!</string>
-
+    <string name="savelocation">Save Location</string>
     <string name="inappropriateInput">Inappropriate input!</string>
     <string name="itemRemoved">Item Removed</string>
     <string name="itemPayedSuccessfully">Item Payed Successfully!</string>
@@ -55,6 +55,7 @@
     <string name="problemToReadFromFile">Problem To Read From File!</string>
     <string name="problemToWriteOnFile">Problem To Write On File!</string>
     <string name="errorMessageNotExist">Error Message Not Exist!</string>
+    <string name="chooseLocation">Please choose your location</string>
 
     <string name="successfulRegister">You Signed up Successfully!</string>
     <string name="cantGetUsersFromDb">Can\'t read users from Db!</string>

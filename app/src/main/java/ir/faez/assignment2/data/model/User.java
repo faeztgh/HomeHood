@@ -18,8 +18,13 @@ public class User {
     private int numberOfUnit;
     private boolean smsChkbx;
     private boolean emailChkbx;
+    private double latitude;
+    private double longitude;
 
-    public User(long id, String name, String lastName, String phoneNo, String email, String userName, String password, String fullAddress, int numberOfUnit, boolean smsChkbx, boolean emailChkbx) {
+
+    public User(long id, String name, String lastName, String phoneNo, String email, String userName
+            , String password, String fullAddress, int numberOfUnit, boolean smsChkbx
+            , boolean emailChkbx, double latitude, double longitude) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -31,10 +36,14 @@ public class User {
         this.numberOfUnit = numberOfUnit;
         this.smsChkbx = smsChkbx;
         this.emailChkbx = emailChkbx;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @Ignore
-    public User(String name, String lastName, String phoneNo, String email, String userName, String password, String fullAddress, int numberOfUnit, boolean smsChkbx, boolean emailChkbx) {
+    public User(String name, String lastName, String phoneNo, String email, String userName
+            , String password, String fullAddress, int numberOfUnit, boolean smsChkbx
+            , boolean emailChkbx, double latitude, double longitude) {
 
         this.name = name;
         this.lastName = lastName;
@@ -46,6 +55,9 @@ public class User {
         this.numberOfUnit = numberOfUnit;
         this.smsChkbx = smsChkbx;
         this.emailChkbx = emailChkbx;
+        this.latitude = latitude;
+        this.longitude = longitude;
+
     }
 
     public long getId() {
@@ -69,71 +81,51 @@ public class User {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getPhoneNo() {
         return phoneNo;
     }
 
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
-    }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getFullAddress() {
         return fullAddress;
     }
 
-    public void setFullAddress(String fullAddress) {
-        this.fullAddress = fullAddress;
-    }
 
     public int getNumberOfUnit() {
         return numberOfUnit;
     }
 
-    public void setNumberOfUnit(int numberOfUnit) {
-        this.numberOfUnit = numberOfUnit;
-    }
 
     public boolean isSmsChkbx() {
         return smsChkbx;
     }
 
-    public void setSmsChkbx(boolean smsChkbx) {
-        this.smsChkbx = smsChkbx;
-    }
 
     public boolean isEmailChkbx() {
         return emailChkbx;
     }
 
-    public void setEmailChkbx(boolean emailChkbx) {
-        this.emailChkbx = emailChkbx;
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 }

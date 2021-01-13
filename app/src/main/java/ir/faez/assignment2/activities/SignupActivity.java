@@ -1,11 +1,14 @@
 package ir.faez.assignment2.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ir.faez.assignment2.R;
@@ -13,6 +16,7 @@ import ir.faez.assignment2.data.async.UserCudAsyncTask;
 import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.User;
 import ir.faez.assignment2.databinding.ActivitySignupBinding;
+import ir.faez.assignment2.location.Location;
 import ir.faez.assignment2.utils.Action;
 
 
@@ -20,7 +24,10 @@ public class SignupActivity
         extends AppCompatActivity
         implements View.OnFocusChangeListener, View.OnClickListener {
 
+    private static final int LOCATION_REQUEST_CODE = 1;
     private ActivitySignupBinding binding;
+    private double latitude;
+    private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,7 @@ public class SignupActivity
         binding.confirmBtn.setOnClickListener(this);
         binding.locationIv.setOnClickListener(this);
         binding.signUpBackIv.setOnClickListener(this);
+        binding.locationIv.setOnClickListener(this);
     }
 
     private void invokeOnFocusListeners() {
@@ -56,6 +64,16 @@ public class SignupActivity
 
 
     // ----------------------------------- Check Validations ---------------------------------------
+
+    private boolean isLatLngValid() {
+        if (latitude != 0 && longitude != 0) {
+            return true;
+        } else {
+            Toast.makeText(this, R.string.chooseLocation, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
     private boolean isMobileValid() {
         if (binding.mobileEdt.getText().toString().length() >= 10
                 && !binding.mobileEdt.getText().toString().trim().isEmpty()) {
@@ -131,11 +149,28 @@ public class SignupActivity
 
 //-------------------------------- Implementing Buttons --------------------------------------------
 
+
     private void locationIvBtn() {
-        Toast.makeText(this, "this option is not implemented yet!"
-                , Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), Location.class);
+        startActivityForResult(intent, LOCATION_REQUEST_CODE);
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                double[] res = data.getDoubleArrayExtra("LATLNG");
+
+                // set result to the class filed
+                this.latitude = res[0];
+                this.longitude = res[1];
+
+
+            }
+        }
+    }
 
     private void clearFormBtn() {
 
@@ -174,41 +209,55 @@ public class SignupActivity
         String email = binding.emailEdt.getText().toString().trim();
         String userName = binding.usernameEdt.getText().toString().trim();
         String password = binding.passwordEdt.getText().toString().trim();
-        String confirmPassword = binding.confirmPasswordEdt.getText().toString().trim();
         String address = binding.addressEdt.getText().toString();
-        int numberOfUnits = Integer.parseInt(binding.numberOfUnitsEdt.getText().toString().trim());
+        String numberOfUnits = binding.numberOfUnitsEdt.getText().toString().trim();
         boolean smsChkbx = binding.emailChkbx.isChecked();
         boolean emailChkbx = binding.smsChkbx.isChecked();
 
+        int numOfUnits = 0;
+        // validate number of units
+        if (!numberOfUnits.equals("")) {
+            numOfUnits = Integer.parseInt(numberOfUnits);
+        } else {
+            Toast.makeText(this, R.string.fillNumberOfUnits, Toast.LENGTH_SHORT).show();
+        }
+
+
+        // validate fields
         if (isInputsFilled()
                 && isEmailValid()
                 && isMobileValid()
                 && isPasswordValid()
-                && isConfirmPasswordValid()) {
+                && isConfirmPasswordValid()
+                && isLatLngValid()) {
 
 
-            //** Implementing database **//
+            //** Implementing insert into database **//
 
+            User user = new User(name, lastName, phoneNo, email, userName, password, address
+                    , numOfUnits, smsChkbx, emailChkbx, this.latitude, this.longitude);
 
-            User user = new User(name, lastName, phoneNo, email, userName, password, address, numberOfUnits, smsChkbx, emailChkbx);
-            UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(this, Action.INSERT_ACTION, new DbResponse<User>() {
+            UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(this, Action.INSERT_ACTION
+                    , new DbResponse<User>() {
                 @Override
                 public void onSuccess(User user) {
-                    Toast.makeText(SignupActivity.this, R.string.successfulRegister, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupActivity.this, R.string.successfulRegister
+                            , Toast.LENGTH_SHORT).show();
 
+                    finish();
 
                 }
 
                 @Override
                 public void onError(Error error) {
-                    Toast.makeText(SignupActivity.this, R.string.cantSignUpError, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupActivity.this, R.string.cantSignUpError
+                            , Toast.LENGTH_SHORT).show();
                 }
             });
             userCudAsyncTask.execute(user);
 
         }
 
-        finish();
 
     }
 
@@ -231,6 +280,7 @@ public class SignupActivity
                     isConfirmPasswordValid();
                     break;
 
+
                 default:
                     Toast.makeText(SignupActivity.this,
                             R.string.inappropriateInput,
@@ -238,6 +288,7 @@ public class SignupActivity
             }
         }
     }
+
 
     // Implementing OnClick
     @Override

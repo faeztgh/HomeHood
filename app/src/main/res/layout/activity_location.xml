@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightBlue_bg"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/google_map"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/horizontal_bottom_guid"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+    <Button
+        android:id="@+id/save_location_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="20dp"
+        app:layout_goneMarginBottom="10dp"
+        android:padding="10dp"
+        android:background="@drawable/white_curve_bg"
+        android:backgroundTint="@color/softGreen"
+
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="@string/savelocation"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/horizontal_bottom_guid"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+
+        />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_bottom_guid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vertical_middle_guid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
