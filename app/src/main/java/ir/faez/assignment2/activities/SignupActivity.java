@@ -3,7 +3,6 @@ package ir.faez.assignment2.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,7 +15,6 @@ import ir.faez.assignment2.data.async.UserCudAsyncTask;
 import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.User;
 import ir.faez.assignment2.databinding.ActivitySignupBinding;
-import ir.faez.assignment2.location.Location;
 import ir.faez.assignment2.utils.Action;
 
 
@@ -151,7 +149,7 @@ public class SignupActivity
 
 
     private void locationIvBtn() {
-        Intent intent = new Intent(getApplicationContext(), Location.class);
+        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
         startActivityForResult(intent, LOCATION_REQUEST_CODE);
 
     }
