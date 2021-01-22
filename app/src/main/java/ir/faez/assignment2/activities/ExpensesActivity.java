@@ -75,7 +75,7 @@ public class ExpensesActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onSuccess(List<Expense> loadedExpenses) {
                 allExpenses = loadedExpenses;
-                // gather all expenses belong to current user logged in
+                // gather all expenses belong to current user logged in and check the type
                 gatherCurrUserExpenses();
             }
 
@@ -84,7 +84,7 @@ public class ExpensesActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(ExpensesActivity.this, R.string.cantGetExpensesFromDb, Toast.LENGTH_SHORT).show();
             }
         });
-        getExpensesAsyncTask.execute();
+        getExpensesAsyncTask.execute(MainActivity.currUser.getId());
     }
 
 

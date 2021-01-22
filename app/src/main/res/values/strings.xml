@@ -30,7 +30,10 @@
     <string name="somethingWentWrongOnInsert">Something went wrong on insert :(</string>
     <string name="somethingWentWrongOnUpdate">Something went wrong on update:(</string>
     <string name="somethingWentWrongOnDelete">Something went wrong on delete :(</string>
+    <string name="somethingWentWrongOnCheckUser">Something went wrong on Check for user existence:(</string>
     <string name="wrongUserNameOrPassword">Wrong username or password!</string>
+    <string name="cannotGetUserFromDb"> Cannot get user from DB!</string>
+    <string name="selectSomewhereOnMap"> Please select somewhere on map</string>
     <string name="fillNumberOfUnits">Please fill number of units</string>
     <string name="newExpenseAdded">New Expense Added!</string>
     <string name="cantAddNewExpense">Can\'t add new Expense :(</string>
@@ -42,7 +45,8 @@
     <string name="optionNotImplYet">this option is not implemented yet!</string>
     <string name="emptyUsernameField">UserName field is EMPTY!</string>
     <string name="emptyPasswordField">Password field is EMPTY!</string>
-    <string name="userNotExist">User not exist!</string>
+    <string name="userNotExist">User not exist in DB!</string>
+    <string name="userExist">User exist!</string>
     <string name="fill">Fill!</string>
     <string name="itemCheckedSuccessfully">Item Checked Successfully!</string>
     <string name="filePathNotSet">File Path Not Set!</string>

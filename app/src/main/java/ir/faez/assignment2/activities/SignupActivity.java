@@ -3,6 +3,9 @@ package ir.faez.assignment2.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ir.faez.assignment2.R;
+import ir.faez.assignment2.data.async.GetSpecificUserAsyncTask;
 import ir.faez.assignment2.data.async.UserCudAsyncTask;
 import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.User;
@@ -26,6 +30,8 @@ public class SignupActivity
     private ActivitySignupBinding binding;
     private double latitude;
     private double longitude;
+    private User checkUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,8 @@ public class SignupActivity
     }
 
     private void init() {
+
+
         // initializing binding
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -43,6 +51,23 @@ public class SignupActivity
         // invoke Listeners
         invokeOnFocusListeners();
         invokeOnClickListeners();
+
+        // checking for user existence by username while typing
+        binding.usernameEdt.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                getUser(binding.usernameEdt.getText().toString().trim());
+            }
+        });
     }
 
 
@@ -58,6 +83,7 @@ public class SignupActivity
         binding.passwordEdt.setOnFocusChangeListener(this);
         binding.confirmPasswordEdt.setOnFocusChangeListener(this);
         binding.emailEdt.setOnFocusChangeListener(this);
+
     }
 
 
@@ -101,6 +127,7 @@ public class SignupActivity
     }
 
     private boolean isPasswordValid() {
+
         if (binding.passwordEdt.getText().toString().length() >= 6
                 && !binding.passwordEdt.getText().toString().trim().isEmpty()) {
             return true;
@@ -170,37 +197,10 @@ public class SignupActivity
         }
     }
 
-    private void clearFormBtn() {
-
-
-        binding.mobileEdt.setText("");
-        binding.firstnameEdt.setText("");
-        binding.lastnameEdt.setText("");
-        binding.usernameEdt.setText("");
-        binding.passwordEdt.setText("");
-        binding.confirmPasswordEdt.setText("");
-        binding.emailEdt.setText("");
-        binding.addressEdt.setText("");
-        binding.numberOfUnitsEdt.setText("");
-        binding.emailChkbx.setChecked(false);
-        binding.smsChkbx.setChecked(false);
-
-    }
-
-    private void revertHints() {
-        revertChangeHint(binding.mobileEdt);
-        revertChangeHint(binding.firstnameEdt);
-        revertChangeHint(binding.lastnameEdt);
-        revertChangeHint(binding.usernameEdt);
-        revertChangeHint(binding.passwordEdt);
-        revertChangeHint(binding.confirmPasswordEdt);
-        revertChangeHint(binding.emailEdt);
-        revertChangeHint(binding.addressEdt);
-
-    }
-
+//
 
     private void registerBtn() {
+
         String name = binding.firstnameEdt.getText().toString().trim();
         String lastName = binding.lastnameEdt.getText().toString().trim();
         String phoneNo = binding.mobileEdt.getText().toString().trim();
@@ -211,6 +211,7 @@ public class SignupActivity
         String numberOfUnits = binding.numberOfUnitsEdt.getText().toString().trim();
         boolean smsChkbx = binding.emailChkbx.isChecked();
         boolean emailChkbx = binding.smsChkbx.isChecked();
+
 
         int numOfUnits = 0;
         // validate number of units
@@ -230,34 +231,53 @@ public class SignupActivity
                 && isLatLngValid()) {
 
 
-            //** Implementing insert into database **//
+            if (checkUser == null) {
 
-            User user = new User(name, lastName, phoneNo, email, userName, password, address
-                    , numOfUnits, smsChkbx, emailChkbx, this.latitude, this.longitude);
 
-            UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(this, Action.INSERT_ACTION
-                    , new DbResponse<User>() {
-                @Override
-                public void onSuccess(User user) {
-                    Toast.makeText(SignupActivity.this, R.string.successfulRegister
-                            , Toast.LENGTH_SHORT).show();
+                //** Implementing insert into database **//
 
-                    finish();
+                User user = new User(name, lastName, phoneNo, email, userName, password, address
+                        , numOfUnits, smsChkbx, emailChkbx, this.latitude, this.longitude);
 
-                }
+                UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(this, Action.INSERT_ACTION
+                        , new DbResponse<User>() {
+                    @Override
+                    public void onSuccess(User user) {
+                        Toast.makeText(SignupActivity.this, R.string.successfulRegister
+                                , Toast.LENGTH_SHORT).show();
 
-                @Override
-                public void onError(Error error) {
-                    Toast.makeText(SignupActivity.this, R.string.cantSignUpError
-                            , Toast.LENGTH_SHORT).show();
-                }
-            });
-            userCudAsyncTask.execute(user);
+                        finish();
+                    }
 
+                    @Override
+                    public void onError(Error error) {
+                        Toast.makeText(SignupActivity.this, R.string.cantSignUpError
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                });
+                userCudAsyncTask.execute(user);
+
+
+            } else {
+                Toast.makeText(this, R.string.userExist, Toast.LENGTH_SHORT).show();
+            }
         }
-
-
     }
+
+    private void getUser(String username) {
+        checkUser = null;
+        GetSpecificUserAsyncTask getSpecificUserAsyncTask = new GetSpecificUserAsyncTask(this, new DbResponse<User>() {
+            @Override
+            public void onSuccess(User user) {
+                checkUser = user;
+            }
+
+            @Override
+            public void onError(Error error) {}
+        });
+        getSpecificUserAsyncTask.execute(username);
+    }
+
 
     //------------------------------------------- Listeners ----------------------------------------
     //Implementing OnFocusChange
@@ -277,8 +297,6 @@ public class SignupActivity
                 case R.id.confirm_password_edt:
                     isConfirmPasswordValid();
                     break;
-
-
                 default:
                     Toast.makeText(SignupActivity.this,
                             R.string.inappropriateInput,
@@ -303,7 +321,6 @@ public class SignupActivity
             case R.id.signUp_back_iv:
                 finish();
                 break;
-
             default:
                 Toast.makeText(this,
                         R.string.inappropriateInput,
@@ -320,12 +337,6 @@ public class SignupActivity
         }
     }
 
-    private void revertChangeHint(EditText editText) {
-        if (editText.getHint().toString().trim().charAt(0) == '*') {
-            editText.setHint(editText.getHint().toString().replace('*', ' '));
-            editText.setHintTextColor(Color.argb(150, 0, 0, 128));
 
-        }
-    }
 }
 

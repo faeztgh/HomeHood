@@ -5,16 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.List;
-
 import ir.faez.assignment2.R;
-import ir.faez.assignment2.data.async.GetUsersAsyncTask;
+import ir.faez.assignment2.data.async.GetSpecificUserAsyncTask;
 import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.User;
 import ir.faez.assignment2.databinding.ActivityMainBinding;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String password;
     private ActivityMainBinding binding;
     private SharedPreferences preferences;//TODO
-    private List<User> users;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onRestart() {
         super.onRestart();
         // get all users from DB
-        getUsers();
+
     }
 
     private void init() {
@@ -51,25 +51,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View view = binding.getRoot();
         setContentView(view);
 
-        // get all users from DB
-        getUsers();
         // invoke Listeners
         invokeOnClickListeners();
+
+        binding.usernameEdt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                getUser(binding.usernameEdt.getText().toString().trim());
+
+            }
+        });
     }
 
-    private void getUsers() {
-        GetUsersAsyncTask getUsersAsyncTask = new GetUsersAsyncTask(this, new DbResponse<List<User>>() {
+    private void getUser(String username) {
+        GetSpecificUserAsyncTask getSpecificUserAsyncTask = new GetSpecificUserAsyncTask(this, new DbResponse<User>() {
             @Override
-            public void onSuccess(List<User> loadedUsers) {
-                users = loadedUsers;
+            public void onSuccess(User user) {
+                currUser = user;
             }
 
             @Override
             public void onError(Error error) {
-                Toast.makeText(MainActivity.this, R.string.cantGetUsersFromDb, Toast.LENGTH_SHORT).show();
             }
         });
-        getUsersAsyncTask.execute();
+        getSpecificUserAsyncTask.execute(username);
     }
 
     private void invokeOnClickListeners() {
@@ -118,14 +131,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private boolean isAuth() {
-        loadData();
+        loadUserPass();
 
         if (currUser != null) {
 
             if (isUsernameValid() && isPasswordValid()) {
 
                 if (userName.equals(currUser.getUserName()) && password.equals(currUser.getPassword())) {
-
                     return true;
                 } else {
                     Toast.makeText(this, R.string.wrongUserNameOrPassword, Toast.LENGTH_SHORT).show();
@@ -142,6 +154,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return false;
         }
 
+    }
+
+    private void loadUserPass() {
+        userName = binding.usernameEdt.getText().toString().trim();
+        password = binding.passwordEdt.getText().toString().trim();
     }
 
 
@@ -162,33 +179,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //------------------------------------- Others -------------------------------------------------
     private void changeHint(EditText editText) {
-
-
         if (editText.getHint().toString().trim().charAt(0) != '*') {
             editText.setHint("*" + editText.getHint().toString());
         }
-
         editText.setHintTextColor(Color.RED);
-
     }
 
-    private void loadData() {
 
-        currUser = getUserByUsername(binding.usernameEdt.getText().toString().trim());
-        // init username and password fields
-        userName = binding.usernameEdt.getText().toString();
-        password = binding.passwordEdt.getText().toString();
-    }
-
-    private User getUserByUsername(String userName) {
-
-        for (User user : users) {
-            if (user.getUserName().equals(userName)) {
-                return user;
-            }
-        }
-        return null;
-    }
 }
 
 

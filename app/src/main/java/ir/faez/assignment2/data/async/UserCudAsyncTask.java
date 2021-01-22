@@ -28,7 +28,6 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
         super.onPreExecute();
         DbManager dbManager = DbManager.getInstance((context));
         userDao = dbManager.userDao();
-
     }
 
     @Override
@@ -47,6 +46,7 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
             case Action.DELETE_ACTION:
 
                 return deleteDoInBackground(users);
+
         }
         return null;
     }
@@ -62,6 +62,7 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
     private Long insertDoInBackground(User[] users) {
         return userDao.insert(user);
     }
+
 
     @Override
     protected void onPostExecute(Long response) {
@@ -86,7 +87,6 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
             Error error = new Error(String.valueOf(R.string.somethingWentWrongOnDelete));
             dbResponse.onError(error);
         }
-
     }
 
     private void updatePostExecute(Long affectedRows) {
@@ -99,7 +99,6 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
     }
 
     private void insertPostExecute(Long userId) {
-
         if (userId > 0) {
             user.setId(userId);
             dbResponse.onSuccess(user);
@@ -109,3 +108,4 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
         }
     }
 }
+

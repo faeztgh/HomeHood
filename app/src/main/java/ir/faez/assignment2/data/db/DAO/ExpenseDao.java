@@ -20,6 +20,6 @@ public interface ExpenseDao {
     @Query("DELETE FROM expense where id= :id")
     int delete(long id);
 
-    @Query("SELECT * FROM expense")
-    List<Expense> getAllExpenses();
+    @Query("SELECT * FROM expense WHERE ownerId= :id")
+    List<Expense> getAllExpenses(long id);
 }

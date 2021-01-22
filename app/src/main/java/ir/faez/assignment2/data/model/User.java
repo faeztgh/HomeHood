@@ -15,9 +15,11 @@ public class User {
     private String userName;
     private String password;
     private String fullAddress;
+//    private String sessionToken;
     private int numberOfUnit;
     private boolean smsChkbx;
     private boolean emailChkbx;
+//    private boolean isLastLogin;
     private double latitude;
     private double longitude;
 

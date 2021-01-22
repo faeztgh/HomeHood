@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,6 +61,7 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
 
 
     private void init() {
+        latLang = null;
         binding = ActivityLocationBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -93,6 +96,7 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
                         public void onMapReady(com.google.android.gms.maps.GoogleMap googleMap) {
                             // init lat lng
                             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
                             // create marker options
                             MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("My Location");
                             // change marker icon
@@ -115,9 +119,9 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
                                     }
                                     marker = googleMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory
                                             .fromResource(R.drawable.baseline_add_location_alt_orange_600_48dp)));
+
                                     // set class instance
                                     MapActivity.latLang = latLng;
-
                                 }
                             });
                         }
@@ -147,16 +151,21 @@ public class MapActivity extends AppCompatActivity implements View.OnClickListen
 
     // send lat lng data to signup activity
     private void saveLocationBtn() {
-        double lat = this.latLang.latitude;
-        double lang = this.latLang.longitude;
+
+        if (latLang != null) {
+            double lat = this.latLang.latitude;
+            double lang = this.latLang.longitude;
 
 
-        double res[] = new double[2];
-        res[0] = lat;
-        res[1] = lang;
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_MESSAGE, res);
-        setResult(RESULT_OK, intent);
-        finish();
+            double res[] = new double[2];
+            res[0] = lat;
+            res[1] = lang;
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_MESSAGE, res);
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            Toast.makeText(this, R.string.selectSomewhereOnMap, Toast.LENGTH_SHORT).show();
+        }
     }
 }

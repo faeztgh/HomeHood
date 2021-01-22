@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -25,12 +26,16 @@
 
         <activity
             android:name=".activities.MapActivity"
-            android:label="location" />
+            android:label="location"
+            android:parentActivityName=".activities.SignupActivity"
+            />
 
 
         <activity
             android:name="ir.faez.assignment2.activities.HomeActivity"
-            android:label="Home Hood" />
+            android:label="Home Hood"
+            android:parentActivityName=".activities.MainActivity"
+            />
 
         <activity
             android:name=".activities.ExpensesActivity"
@@ -44,6 +49,7 @@
         <activity
             android:name=".activities.PaymentsActivity"
             android:label="Payments" />
+
         <activity
             android:name="ir.faez.assignment2.activities.SignupActivity"
             android:label="Sign Up"
