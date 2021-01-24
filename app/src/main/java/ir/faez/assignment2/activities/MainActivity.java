@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,37 +16,43 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import ir.faez.assignment2.R;
 import ir.faez.assignment2.data.async.GetSpecificUserAsyncTask;
+import ir.faez.assignment2.data.async.UserCudAsyncTask;
 import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.User;
 import ir.faez.assignment2.databinding.ActivityMainBinding;
+import ir.faez.assignment2.network.NetworkHelper;
+import ir.faez.assignment2.utils.Action;
+import ir.faez.assignment2.utils.Result;
+import ir.faez.assignment2.utils.ResultListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "SIGNIN";
     private static final int REQUEST_CODE = 1;
     public static User currUser;
     private String userName;
     private String password;
     private ActivityMainBinding binding;
     private SharedPreferences preferences;//TODO
+    private NetworkHelper networkHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getUserByState();
+
         preferences = getPreferences(Context.MODE_PRIVATE);
 
         init();
     }
 
-    // it will read new user that register right now.
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        // get all users from DB
-
-    }
 
     private void init() {
+
+        // initializing NetworkHelper
+        networkHelper = NetworkHelper.getInstance(getApplicationContext());
+
         // initializing binding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -65,14 +72,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void afterTextChanged(Editable s) {
-                getUser(binding.usernameEdt.getText().toString().trim());
+//                getUser(binding.usernameEdt.getText().toString().trim());
 
             }
         });
     }
 
+
     private void getUser(String username) {
-        GetSpecificUserAsyncTask getSpecificUserAsyncTask = new GetSpecificUserAsyncTask(this, new DbResponse<User>() {
+        GetSpecificUserAsyncTask getSpecificUserAsyncTask = new GetSpecificUserAsyncTask(this, Action.GET_BY_USERNAME_ACTION, new DbResponse<User>() {
             @Override
             public void onSuccess(User user) {
                 currUser = user;
@@ -84,6 +92,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         getSpecificUserAsyncTask.execute(username);
     }
+
+
+    private void getUserByState() {
+
+        GetSpecificUserAsyncTask getSpecificUserAsyncTask = new GetSpecificUserAsyncTask(this, Action.GET_BY_STATE_ACTION, new DbResponse<User>() {
+            @Override
+            public void onSuccess(User user) {
+                if (user != null && user.isLoggedIn().equals("true")) {
+                    currUser = user;
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    currUser = null;
+                }
+            }
+
+            @Override
+            public void onError(Error error) {
+            }
+        });
+        getSpecificUserAsyncTask.execute("true");
+
+    }
+
 
     private void invokeOnClickListeners() {
         binding.signInBtn.setOnClickListener(this);
@@ -98,12 +131,66 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void signInBtn() {
+        loadUserPass();
 
-        if (isAuth()) {
-            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(intent);
-            finish();
+//        Log.i(TAG, "signInBtn: " + currUser.isLoggedIn());
+        if (currUser == null) {
+
+            if (isAuth()) {
+
+                // implementing online Auth
+                final User user = new User(userName, password);
+                networkHelper.signinUser(user, new ResultListener<User>() {
+                    @Override
+                    public void onResult(Result<User> result) {
+                        Error error = (result != null) ? result.getError() : null;
+                        User resultUser = (result != null) ? result.getItem() : null;
+                        if ((result == null) || (error != null) || (resultUser == null)) {
+                            String errMsg = (error != null) ? error.getMessage() : getString(R.string.cantSignInError);
+                            Toast.makeText(MainActivity.this, errMsg, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        user.setId(resultUser.getId());
+                        user.setSessionToken(resultUser.getSessionToken());
+                        user.setName(resultUser.getName());
+                        user.setLastName(resultUser.getLastName());
+                        user.setPhoneNo(resultUser.getPhoneNo());
+                        user.setEmail(resultUser.getEmail());
+                        user.setUsername(resultUser.getUsername());
+                        user.setPassword(resultUser.getPassword());
+                        user.setFullAddress(resultUser.getFullAddress());
+                        user.setNumberOfUnit(resultUser.getNumberOfUnit());
+                        user.setSmsChkbx(resultUser.isSmsChkbx());
+                        user.setEmailChkbx(resultUser.isEmailChkbx());
+                        user.setIsLoggedIn("true");
+
+                        // implementing user insertion into database
+                        UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(getApplicationContext(), Action.INSERT_ACTION, new DbResponse<User>() {
+                            @Override
+                            public void onSuccess(User user) {
+                                currUser = user;
+                                if (currUser != null) {
+                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
+                                    userName = "";
+                                    password = "";
+                                }
+                            }
+
+                            @Override
+                            public void onError(Error error) {
+                                Toast.makeText(MainActivity.this, R.string.cantSignInError, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        userCudAsyncTask.execute(user);
+                    }
+                });
+            }
         }
+
 
     }
     // ----------------------------------- Check Validations ---------------------------------------
@@ -131,30 +218,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private boolean isAuth() {
-        loadUserPass();
-
-        if (currUser != null) {
-
-            if (isUsernameValid() && isPasswordValid()) {
-
-                if (userName.equals(currUser.getUsername()) && password.equals(currUser.getPassword())) {
-                    return true;
-                } else {
-                    Toast.makeText(this, R.string.wrongUserNameOrPassword, Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            } else {
-                Toast.makeText(MainActivity.this,
-                        R.string.wrongUserNameOrPassword,
-                        Toast.LENGTH_SHORT).show();
-                return false;
-            }
+        if (isUsernameValid() && isPasswordValid()) {
+            return true;
         } else {
-            Toast.makeText(this, R.string.userNotExist, Toast.LENGTH_SHORT).show();
             return false;
         }
-
     }
+
 
     private void loadUserPass() {
         userName = binding.usernameEdt.getText().toString().trim();

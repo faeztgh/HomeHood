@@ -11,9 +11,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ir.faez.assignment2.R;
+import ir.faez.assignment2.data.async.UserCudAsyncTask;
+import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.User;
 import ir.faez.assignment2.databinding.ActivityHomeBinding;
 import ir.faez.assignment2.databinding.DialogWindowBinding;
+import ir.faez.assignment2.utils.Action;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -46,6 +49,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(view);
         // invoke Listeners
         invokeOnClickListeners();
+
+
     }
 
 
@@ -82,15 +87,34 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void invokeExitBtn() {
-        moveTaskToBack(true);
-        android.os.Process.killProcess(android.os.Process.myPid());
-        finish();
+        MainActivity.currUser.setIsLoggedIn("false");
+
+        UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(this, Action.UPDATE_ACTION,
+                new DbResponse<User>() {
+                    @Override
+                    public void onSuccess(User user) {
+
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+
+                    }
+                });
+        userCudAsyncTask.execute(MainActivity.currUser);
+
+        if (MainActivity.currUser.isLoggedIn().equals("false")) {
+
+            moveTaskToBack(true);
+            finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
     }
+
 
     private void invokeAnnouncementsBtn() {
         Toast.makeText(this, R.string.optionNotImplYet
-                ,
-                Toast.LENGTH_SHORT).show();
+                , Toast.LENGTH_SHORT).show();
 
 
     }

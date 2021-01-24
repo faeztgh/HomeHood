@@ -51,6 +51,7 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
         return null;
     }
 
+
     private Long deleteDoInBackground(User[] users) {
         return (long) userDao.delete(user.getId());
     }
@@ -77,8 +78,10 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
             case Action.DELETE_ACTION:
                 deletePostExecute(response);
                 break;
+
         }
     }
+
 
     private void deletePostExecute(Long response) {
         if (response > 0) {

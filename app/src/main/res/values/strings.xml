@@ -67,6 +67,7 @@
     <string name="successfulRegister">You Signed up Successfully!</string>
     <string name="cantGetUsersFromDb">Can\'t read users from Db!</string>
     <string name="cantSignUpError">Can\'t sign up, please try again!</string>
+    <string name="cantSignInError">Can\'t sign in, please try again!</string>
     <string name="title">Title</string>
     <string name="amount">Amount</string>
     <string name="paymentDate">Payment Date</string>

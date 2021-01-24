@@ -229,42 +229,10 @@ public class SignupActivity
                         Toast.makeText(SignupActivity.this, errMsg, Toast.LENGTH_SHORT).show();
                         return;
                     }
-
                     Toast.makeText(SignupActivity.this, R.string.successfulRegister, Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             });
-
-
-//            if (checkUser == null) {
-//
-//
-//                //** Implementing insert into database **//
-//
-//                User user = new User(name, lastName, phoneNo, email, userName, password, address
-//                        , numOfUnits, smsChkbx, emailChkbx, this.latitude, this.longitude);
-//
-//                UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(this, Action.INSERT_ACTION
-//                        , new DbResponse<User>() {
-//                    @Override
-//                    public void onSuccess(User user) {
-//                        Toast.makeText(SignupActivity.this, R.string.successfulRegister
-//                                , Toast.LENGTH_SHORT).show();
-//
-//                        finish();
-//                    }
-//
-//                    @Override
-//                    public void onError(Error error) {
-//                        Toast.makeText(SignupActivity.this, R.string.cantSignUpError
-//                                , Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                userCudAsyncTask.execute(user);
-//
-//
-//            } else {
-//                Toast.makeText(this, R.string.userExist, Toast.LENGTH_SHORT).show();
-//            }
         }
     }
 

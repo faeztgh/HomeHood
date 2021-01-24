@@ -2,6 +2,7 @@ package ir.faez.assignment2.data.db.DAO;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -11,7 +12,7 @@ import ir.faez.assignment2.data.model.User;
 
 @Dao
 public interface UserDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(User user);
 
     @Update
@@ -25,4 +26,9 @@ public interface UserDao {
 
     @Query("SELECT * FROM user WHERE userName= :username")
     User getUserByUsername(String username);
+
+    @Query("SELECT * FROM user WHERE isLoggedIn= :state")
+    User getUserByState(String state);
+
+
 }

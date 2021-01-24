@@ -72,7 +72,10 @@ public class NetworkHelper {
             data = (bytes != null) ? new String(bytes, StandardCharsets.UTF_8) : "";
 
         }
-        Log.e(TAG, "Volley error with status code" + statusCode + "received with this message: " + data);
+
+        Log.e(TAG, "Volley error with status code " + statusCode + " received with this message: " + data);
+
+
     }
 
     public void signupUser(final User user, final ResultListener<User> listener) {
@@ -121,7 +124,24 @@ public class NetworkHelper {
             @Override
             public void onErrorResponse(VolleyError error) {
                 printVolleyErrorDetailes(error);
-                Error err = new Error(context.getString(R.string.networkGeneralError));
+
+                // checking for username or email existence
+                NetworkResponse errResponse = (error != null) ? error.networkResponse : null;
+                String data = "";
+                String myMessage = null;
+                if (errResponse != null) {
+                    byte[] bytes = errResponse.data;
+                    data = (bytes != null) ? new String(bytes, StandardCharsets.UTF_8) : "";
+                    if (data.substring(8, 11).equals("202")) {
+                        myMessage = "Username Exist!";
+                    } else if (data.substring(8, 11).equals("203")) {
+                        myMessage = "Email Exist!";
+                    } else {
+                        myMessage = context.getString(R.string.networkGeneralError);
+                    }
+                }
+
+                Error err = new Error(myMessage);
                 listener.onResult(new Result<User>(null, null, err));
                 return;
             }
@@ -171,6 +191,7 @@ public class NetworkHelper {
                 try {
                     resultUser = gson.fromJson(response, new TypeToken<User>() {
                     }.getType());
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     Error error = new Error(context.getString(R.string.networkJsonError));
@@ -186,7 +207,20 @@ public class NetworkHelper {
             @Override
             public void onErrorResponse(VolleyError error) {
                 printVolleyErrorDetailes(error);
-                Error err = new Error(context.getString(R.string.networkGeneralError));
+                // check for user/pass validation
+                NetworkResponse errResponse = (error != null) ? error.networkResponse : null;
+                String data = "";
+                String myMessage = null;
+                if (errResponse != null) {
+                    byte[] bytes = errResponse.data;
+                    data = (bytes != null) ? new String(bytes, StandardCharsets.UTF_8) : "";
+                    if (data.substring(8, 11).equals("101")) {
+                        myMessage = "Username or Password is Invalid";
+                    } else {
+                        myMessage = context.getString(R.string.networkGeneralError);
+                    }
+                }
+                Error err = new Error(myMessage);
                 listener.onResult(new Result<User>(null, null, err));
             }
         };
@@ -276,5 +310,6 @@ public class NetworkHelper {
         };
         requestQueue.add(request);
     }
+
 
 }
