@@ -18,8 +18,8 @@ public interface ExpenseDao {
     int update(Expense expense);
 
     @Query("DELETE FROM expense where id= :id")
-    int delete(long id);
+    int delete(String id);
 
     @Query("SELECT * FROM expense WHERE ownerId= :id")
-    List<Expense> getAllExpenses(long id);
+    List<Expense> getAllExpenses(String id);
 }

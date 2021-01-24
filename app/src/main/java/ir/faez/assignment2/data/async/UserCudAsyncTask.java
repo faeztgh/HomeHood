@@ -100,7 +100,7 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
 
     private void insertPostExecute(Long userId) {
         if (userId > 0) {
-            user.setId(userId);
+            user.setId(userId.toString());
             dbResponse.onSuccess(user);
         } else {
             Error error = new Error(String.valueOf(R.string.somethingWentWrongOnInsert));

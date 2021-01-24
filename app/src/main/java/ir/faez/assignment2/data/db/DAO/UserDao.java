@@ -18,7 +18,7 @@ public interface UserDao {
     int update(User user);
 
     @Query("DELETE FROM user WHERE id= :id")
-    int delete(long id);
+    int delete(String id);
 
     @Query("SELECT * FROM user")
     List<User> getAllUsers();

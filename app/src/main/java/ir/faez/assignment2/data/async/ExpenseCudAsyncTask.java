@@ -101,7 +101,7 @@ public class ExpenseCudAsyncTask extends AsyncTask<Expense, Void, Long> {
     private void insertPostExecute(Long expenseId) {
 
         if (expenseId > 0) {
-            expense.setId(expenseId);
+            expense.setId(expenseId.toString());
             dbResponse.onSuccess(expense);
         } else {
             Error error = new Error(String.valueOf(R.string.somethingWentWrongOnInsert));

@@ -143,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         firstName = user.getName();
         lastName = user.getLastName();
         fullName = firstName + " " + lastName;
-        userName = user.getUserName();
+        userName = user.getUsername();
         email = user.getEmail();
         mobile = user.getPhoneNo();
         address = user.getFullAddress();

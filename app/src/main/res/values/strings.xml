@@ -47,6 +47,9 @@
     <string name="emptyPasswordField">Password field is EMPTY!</string>
     <string name="userNotExist">User not exist in DB!</string>
     <string name="userExist">User exist!</string>
+    <string name="networkConnectionError">Network Connection Error!</string>
+    <string name="networkJsonError">Cannot convert data to json</string>
+    <string name="networkGeneralError">Network Error!</string>
     <string name="fill">Fill!</string>
     <string name="itemCheckedSuccessfully">Item Checked Successfully!</string>
     <string name="filePathNotSet">File Path Not Set!</string>

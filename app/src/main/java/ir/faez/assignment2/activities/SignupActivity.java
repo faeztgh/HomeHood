@@ -1,10 +1,7 @@
 package ir.faez.assignment2.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -14,23 +11,23 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ir.faez.assignment2.R;
-import ir.faez.assignment2.data.async.GetSpecificUserAsyncTask;
-import ir.faez.assignment2.data.async.UserCudAsyncTask;
-import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.User;
 import ir.faez.assignment2.databinding.ActivitySignupBinding;
-import ir.faez.assignment2.utils.Action;
+import ir.faez.assignment2.network.NetworkHelper;
+import ir.faez.assignment2.utils.Result;
+import ir.faez.assignment2.utils.ResultListener;
 
 
 public class SignupActivity
         extends AppCompatActivity
         implements View.OnFocusChangeListener, View.OnClickListener {
 
+    private static final String TAG = "SIGNUP";
     private static final int LOCATION_REQUEST_CODE = 1;
     private ActivitySignupBinding binding;
     private double latitude;
     private double longitude;
-    private User checkUser;
+    private NetworkHelper networkHelper;
 
 
     @Override
@@ -43,7 +40,8 @@ public class SignupActivity
 
     private void init() {
 
-
+        // initializing NetworkHelper
+        networkHelper = NetworkHelper.getInstance(getApplicationContext());
         // initializing binding
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -52,22 +50,7 @@ public class SignupActivity
         invokeOnFocusListeners();
         invokeOnClickListeners();
 
-        // checking for user existence by username while typing
-        binding.usernameEdt.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                getUser(binding.usernameEdt.getText().toString().trim());
-            }
-        });
     }
 
 
@@ -231,51 +214,58 @@ public class SignupActivity
                 && isLatLngValid()) {
 
 
-            if (checkUser == null) {
+//            implementing Server Signup
+            User user = new User(name, lastName, phoneNo, email, userName, password, address
+                    , numOfUnits, smsChkbx, emailChkbx, this.latitude, this.longitude);
 
+            networkHelper.signupUser(user, new ResultListener<User>() {
+                @Override
+                public void onResult(Result<User> result) {
+                    Log.d(TAG, "Result of signing user up in server" + result);
+                    Error error = (result != null) ? result.getError() : null;
 
-                //** Implementing insert into database **//
-
-                User user = new User(name, lastName, phoneNo, email, userName, password, address
-                        , numOfUnits, smsChkbx, emailChkbx, this.latitude, this.longitude);
-
-                UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(this, Action.INSERT_ACTION
-                        , new DbResponse<User>() {
-                    @Override
-                    public void onSuccess(User user) {
-                        Toast.makeText(SignupActivity.this, R.string.successfulRegister
-                                , Toast.LENGTH_SHORT).show();
-
-                        finish();
+                    if ((result == null) || (error != null)) {
+                        String errMsg = (error != null) ? error.getMessage() : getString(R.string.cantSignUpError);
+                        Toast.makeText(SignupActivity.this, errMsg, Toast.LENGTH_SHORT).show();
+                        return;
                     }
 
-                    @Override
-                    public void onError(Error error) {
-                        Toast.makeText(SignupActivity.this, R.string.cantSignUpError
-                                , Toast.LENGTH_SHORT).show();
-                    }
-                });
-                userCudAsyncTask.execute(user);
+                    Toast.makeText(SignupActivity.this, R.string.successfulRegister, Toast.LENGTH_SHORT).show();
+                }
+            });
 
 
-            } else {
-                Toast.makeText(this, R.string.userExist, Toast.LENGTH_SHORT).show();
-            }
+//            if (checkUser == null) {
+//
+//
+//                //** Implementing insert into database **//
+//
+//                User user = new User(name, lastName, phoneNo, email, userName, password, address
+//                        , numOfUnits, smsChkbx, emailChkbx, this.latitude, this.longitude);
+//
+//                UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(this, Action.INSERT_ACTION
+//                        , new DbResponse<User>() {
+//                    @Override
+//                    public void onSuccess(User user) {
+//                        Toast.makeText(SignupActivity.this, R.string.successfulRegister
+//                                , Toast.LENGTH_SHORT).show();
+//
+//                        finish();
+//                    }
+//
+//                    @Override
+//                    public void onError(Error error) {
+//                        Toast.makeText(SignupActivity.this, R.string.cantSignUpError
+//                                , Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                userCudAsyncTask.execute(user);
+//
+//
+//            } else {
+//                Toast.makeText(this, R.string.userExist, Toast.LENGTH_SHORT).show();
+//            }
         }
-    }
-
-    private void getUser(String username) {
-        checkUser = null;
-        GetSpecificUserAsyncTask getSpecificUserAsyncTask = new GetSpecificUserAsyncTask(this, new DbResponse<User>() {
-            @Override
-            public void onSuccess(User user) {
-                checkUser = user;
-            }
-
-            @Override
-            public void onError(Error error) {}
-        });
-        getSpecificUserAsyncTask.execute(username);
     }
 
 

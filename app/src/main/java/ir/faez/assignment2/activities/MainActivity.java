@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if (isUsernameValid() && isPasswordValid()) {
 
-                if (userName.equals(currUser.getUserName()) && password.equals(currUser.getPassword())) {
+                if (userName.equals(currUser.getUsername()) && password.equals(currUser.getPassword())) {
                     return true;
                 } else {
                     Toast.makeText(this, R.string.wrongUserNameOrPassword, Toast.LENGTH_SHORT).show();

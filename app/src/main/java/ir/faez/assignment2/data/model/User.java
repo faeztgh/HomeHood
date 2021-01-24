@@ -1,30 +1,48 @@
 package ir.faez.assignment2.data.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity
 public class User {
-    @PrimaryKey(autoGenerate = true)
-    private long id;
+    @PrimaryKey
+    @NonNull
+    @SerializedName("ObjectId")
+    private String id;
+    @ColumnInfo
     private String name;
+    @ColumnInfo
     private String lastName;
+    @ColumnInfo
     private String phoneNo;
+    @ColumnInfo
     private String email;
-    private String userName;
+    @ColumnInfo
+    private String username;
+    @ColumnInfo
     private String password;
+    @ColumnInfo
     private String fullAddress;
-//    private String sessionToken;
+    @ColumnInfo
+    private String sessionToken;
+    @ColumnInfo
     private int numberOfUnit;
+    @ColumnInfo
     private boolean smsChkbx;
+    @ColumnInfo
     private boolean emailChkbx;
-//    private boolean isLastLogin;
+    @ColumnInfo
     private double latitude;
+    @ColumnInfo
     private double longitude;
 
 
-    public User(long id, String name, String lastName, String phoneNo, String email, String userName
+    public User(String id, String name, String lastName, String phoneNo, String email, String username
             , String password, String fullAddress, int numberOfUnit, boolean smsChkbx
             , boolean emailChkbx, double latitude, double longitude) {
         this.id = id;
@@ -32,7 +50,7 @@ public class User {
         this.lastName = lastName;
         this.phoneNo = phoneNo;
         this.email = email;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.fullAddress = fullAddress;
         this.numberOfUnit = numberOfUnit;
@@ -43,7 +61,7 @@ public class User {
     }
 
     @Ignore
-    public User(String name, String lastName, String phoneNo, String email, String userName
+    public User(String name, String lastName, String phoneNo, String email, String username
             , String password, String fullAddress, int numberOfUnit, boolean smsChkbx
             , boolean emailChkbx, double latitude, double longitude) {
 
@@ -51,7 +69,7 @@ public class User {
         this.lastName = lastName;
         this.phoneNo = phoneNo;
         this.email = email;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.fullAddress = fullAddress;
         this.numberOfUnit = numberOfUnit;
@@ -62,12 +80,11 @@ public class User {
 
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -94,8 +111,8 @@ public class User {
     }
 
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
 
@@ -129,5 +146,13 @@ public class User {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public String getSessionToken() {
+        return sessionToken;
+    }
+
+    public void setSessionToken(String sessionToken) {
+        this.sessionToken = sessionToken;
     }
 }

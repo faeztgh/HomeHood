@@ -11,7 +11,7 @@ import ir.faez.assignment2.data.db.DAO.ExpenseDao;
 import ir.faez.assignment2.data.db.DbManager;
 import ir.faez.assignment2.data.model.Expense;
 
-public class GetExpensesAsyncTask extends AsyncTask<Long, Void, List<Expense>> {
+public class GetExpensesAsyncTask extends AsyncTask<String, Void, List<Expense>> {
     private Context context;
     private ExpenseDao expenseDao;
     private DbResponse<List<Expense>> dbResponse;
@@ -22,7 +22,7 @@ public class GetExpensesAsyncTask extends AsyncTask<Long, Void, List<Expense>> {
     }
 
     @Override
-    protected List<Expense> doInBackground(Long... id) {
+    protected List<Expense> doInBackground(String... id) {
         return expenseDao.getAllExpenses(id[0]);
     }
 
