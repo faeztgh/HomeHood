@@ -149,14 +149,14 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
 
         try {
             // converting arrayList of expense to json string
-            String content = gson.toJson(ExpensesActivity.getExpensesList());
-            int errorCode = fileAccessHelper.writeToFile(fileUri, content);
+//            String content = gson.toJson(ExpensesActivity.getExpensesList());
+//            int errorCode = fileAccessHelper.writeToFile(fileUri, content);
 
-            if (errorCode > 0) {
-                String errorMessage = fileAccessHelper.getFileErrorMessage(errorCode);
-                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-                return;
-            }
+//            if (errorCode > 0) {
+//                String errorMessage = fileAccessHelper.getFileErrorMessage(errorCode);
+//                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+//                return;
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -204,7 +204,7 @@ public class ReportsActivity extends AppCompatActivity implements View.OnClickLi
             ArrayList<Expense> res = gson.fromJson(fileContents, new TypeToken<ArrayList<Expense>>() {
             }.getType());
             // for appending using addAll
-            ExpensesActivity.getExpensesList().addAll(res);
+//            ExpensesActivity.getExpensesList().addAll(res);
 
         } catch (Exception e) {
             e.printStackTrace();

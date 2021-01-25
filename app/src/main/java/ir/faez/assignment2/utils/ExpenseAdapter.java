@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -17,8 +16,6 @@ import java.util.List;
 
 import ir.faez.assignment2.R;
 import ir.faez.assignment2.activities.NewExpenseActivity;
-import ir.faez.assignment2.data.async.ExpenseCudAsyncTask;
-import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.Expense;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHolder> {
@@ -30,8 +27,10 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     private OnExpenseClickListener onExpenseClickListener;
     private String activityName;
 
+
     //Constructor
-    public ExpenseAdapter(Context context, List<Expense> expenses, OnExpenseClickListener onExpenseClickListener, String activityName) {
+    public ExpenseAdapter(Context context, List<Expense> expenses,
+                          OnExpenseClickListener onExpenseClickListener, String activityName) {
         this.context = context;
         this.expenses = expenses;
         this.layoutInflater = LayoutInflater.from(context);
@@ -61,91 +60,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
     // this method called from other activities to remove an item from recyclerView
     public void removeItem(int position) {
-
-        // removing from DB
-        Expense removedExpense = expenses.get(position);
-        ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(context, Action.DELETE_ACTION, new DbResponse<Expense>() {
-            @Override
-            public void onSuccess(Expense expense) {
-                //remove from ui
-                removeItemFromUi(position);
-            }
-
-            @Override
-            public void onError(Error error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        if (removedExpense != null) {
-            expenseCudAsyncTask.execute(removedExpense);
-        }
-    }
-
-
-    // this method called from other activities to add an item to recyclerView
-    public void payItem(int position, String activityName) {
-
-        switch (activityName) {
-            case Status.payments:
-                paymentsImpl(position);
-                break;
-
-            case Status.expenses:
-                expensesImpl(position);
-                break;
-        }
-    }
-
-    private void expensesImpl(int position) {
-
-        // implementing update expense status to db
-        Expense expense = expenses.get(position);
-        expense.setStatus(Status.payments);
-        ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(context, Action.UPDATE_ACTION, new DbResponse<Expense>() {
-            @Override
-            public void onSuccess(Expense expense) {
-                removeItemFromUi(position);
-            }
-
-            @Override
-            public void onError(Error error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        expenseCudAsyncTask.execute(expense);
-    }
-
-    private void paymentsImpl(int position) {
-        // notify to change the index of items in array and prevent crash
-        notifyItemRangeChanged(position, getItemCount());
-
-        // implementing update expense status to db
-        Expense expense = expenses.get(position);
-        expense.setStatus(Status.expenses);
-        ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(context, Action.UPDATE_ACTION, new DbResponse<Expense>() {
-            @Override
-            public void onSuccess(Expense expense) {
-                removeItemFromUi(position);
-            }
-
-            @Override
-            public void onError(Error error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        expenseCudAsyncTask.execute(expense);
-
-
-    }
-
-    private void removeItemFromUi(int position) {
-        // removing an item from the arrayList
         expenses.remove(position);
-        // notify to layout that item is removed and should be update
         notifyItemRemoved(position);
-        // notify to change the index of items in array and prevent crash
         notifyItemRangeChanged(position, getItemCount());
     }
+
 
     //---------------------------------------------------------------------
 
@@ -160,6 +79,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         public ImageView closeIv;
         public ImageView payIv;
         private int position;
+        private Expense expense;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -228,10 +148,10 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.expenses_close_iv:
-                    onExpenseClickListener.onItemRemoved(position);
+                    onExpenseClickListener.onItemRemoved(expense, position);
                     break;
                 case R.id.expenses_pay_iv:
-                    onExpenseClickListener.onItemPayed(position);
+                    onExpenseClickListener.onItemPayed(expense, position);
                     break;
             }
         }

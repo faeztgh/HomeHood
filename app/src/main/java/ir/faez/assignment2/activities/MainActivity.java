@@ -61,42 +61,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // invoke Listeners
         invokeOnClickListeners();
 
-        binding.usernameEdt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-//                getUser(binding.usernameEdt.getText().toString().trim());
-
-            }
-        });
     }
 
-
-    private void getUser(String username) {
-        GetSpecificUserAsyncTask getSpecificUserAsyncTask = new GetSpecificUserAsyncTask(this, Action.GET_BY_USERNAME_ACTION, new DbResponse<User>() {
-            @Override
-            public void onSuccess(User user) {
-                currUser = user;
-            }
-
-            @Override
-            public void onError(Error error) {
-            }
-        });
-        getSpecificUserAsyncTask.execute(username);
-    }
 
 
     private void getUserByState() {
 
-        GetSpecificUserAsyncTask getSpecificUserAsyncTask = new GetSpecificUserAsyncTask(this, Action.GET_BY_STATE_ACTION, new DbResponse<User>() {
+        GetSpecificUserAsyncTask getSpecificUserAsyncTask = new GetSpecificUserAsyncTask(this,
+                Action.GET_BY_STATE_ACTION, new DbResponse<User>() {
             @Override
             public void onSuccess(User user) {
                 if (user != null && user.isLoggedIn().equals("true")) {

@@ -246,7 +246,7 @@ public class NetworkHelper {
         }
 
 
-        String url = hostUrl + "/classes/expense";
+        String url = hostUrl + "/classes/transaction";
         String expJson = null;
         try {
             expJson = gson.toJson(expense);
@@ -311,5 +311,150 @@ public class NetworkHelper {
         requestQueue.add(request);
     }
 
+
+    public void updateExpense(final Expense expense, final User currentUser, final ResultListener<Expense> listener) {
+        if (!isNetworkConnected()) {
+            Error error = new Error(context.getString(R.string.networkGeneralError));
+            listener.onResult(new Result<Expense>(null, null, error));
+            return;
+        }
+
+        String url = hostUrl + "/classes/transaction/" + expense.getId();
+        String expJson = null;
+        try {
+            expJson = gson.toJson(expense);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Error error = new Error(context.getString(R.string.networkJsonError));
+            listener.onResult(new Result<Expense>(null, null, error));
+            return;
+        }
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Expense update response: " + response);
+                if (TextUtils.isEmpty(response)) {
+                    Error error = new Error(context.getString(R.string.networkGeneralError));
+                    listener.onResult(new Result<Expense>(null, null, error));
+                    return;
+                }
+
+                Expense resultExp = null;
+                try {
+                    resultExp = gson.fromJson(response, new TypeToken<Expense>() {
+                    }.getType());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    Error error = new Error(context.getString(R.string.networkJsonError));
+                    listener.onResult(new Result<Expense>(null, null, error));
+                    return;
+                }
+
+                listener.onResult(new Result<Expense>(resultExp, null, null));
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                printVolleyErrorDetailes(error);
+                Error err = new Error(context.getString(R.string.networkGeneralError));
+                listener.onResult(new Result<Expense>(null, null, err));
+            }
+        };
+
+        final String jsonStr = expJson;
+        StringRequest request = new StringRequest(Request.Method.PUT, url, responseListener, errorListener) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("X-Parse-Application-Id", appId);
+                headers.put("X-Parse-REST-API-Key", apiKey);
+                headers.put("X-Parse-Session-Token", currentUser.getSessionToken());
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return jsonStr.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        requestQueue.add(request);
+    }
+
+
+    public void deleteExpense(final Expense expense, final User currentUser, final ResultListener<Expense> listener) {
+        if (!isNetworkConnected()) {
+            Error error = new Error(context.getString(R.string.networkGeneralError));
+            listener.onResult(new Result<Expense>(null, null, error));
+            return;
+        }
+
+        String url = hostUrl + "/classes/transaction/" + expense.getId();
+        String expJson = null;
+        try {
+            expJson = gson.toJson(expense);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Error error = new Error(context.getString(R.string.networkJsonError));
+            listener.onResult(new Result<Expense>(null, null, error));
+            return;
+        }
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Expense update response: " + response);
+                if (TextUtils.isEmpty(response)) {
+                    Error error = new Error(context.getString(R.string.networkGeneralError));
+                    listener.onResult(new Result<Expense>(null, null, error));
+                    return;
+                }
+
+                Expense resultExp = null;
+                try {
+                    resultExp = gson.fromJson(response, new TypeToken<Expense>() {
+                    }.getType());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    Error error = new Error(context.getString(R.string.networkJsonError));
+                    listener.onResult(new Result<Expense>(null, null, error));
+                    return;
+                }
+
+                listener.onResult(new Result<Expense>(resultExp, null, null));
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                printVolleyErrorDetailes(error);
+                Error err = new Error(context.getString(R.string.networkGeneralError));
+                listener.onResult(new Result<Expense>(null, null, err));
+            }
+        };
+
+        final String jsonStr = expJson;
+        StringRequest request = new StringRequest(Request.Method.DELETE, url, responseListener, errorListener) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("X-Parse-Application-Id", appId);
+                headers.put("X-Parse-REST-API-Key", apiKey);
+                headers.put("X-Parse-Session-Token", currentUser.getSessionToken());
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return jsonStr.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+        requestQueue.add(request);
+    }
 
 }

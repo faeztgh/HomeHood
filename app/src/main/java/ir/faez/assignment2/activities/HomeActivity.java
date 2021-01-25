@@ -49,8 +49,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(view);
         // invoke Listeners
         invokeOnClickListeners();
-
-
     }
 
 
@@ -93,7 +91,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 new DbResponse<User>() {
                     @Override
                     public void onSuccess(User user) {
+                        if (MainActivity.currUser.isLoggedIn().equals("false")) {
 
+                            moveTaskToBack(true);
+                            finish();
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                        }
                     }
 
                     @Override
@@ -103,12 +106,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 });
         userCudAsyncTask.execute(MainActivity.currUser);
 
-        if (MainActivity.currUser.isLoggedIn().equals("false")) {
 
-            moveTaskToBack(true);
-            finish();
-            android.os.Process.killProcess(android.os.Process.myPid());
-        }
     }
 
 
@@ -180,6 +178,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (smsCheckbox) {
             confirmationType += " SmS ";
         }
+
+
     }
 
 

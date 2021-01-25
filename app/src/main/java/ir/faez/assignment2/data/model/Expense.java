@@ -14,7 +14,7 @@ public class Expense implements Serializable {
     // Instance fields
     @PrimaryKey
     @NonNull
-    @SerializedName("ObjectId")
+    @SerializedName("objectId")
     private String id;
     private String ownerId;
     private String title;

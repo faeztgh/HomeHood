@@ -1,8 +1,8 @@
 package ir.faez.assignment2.activities;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.Serializable;
 import java.util.Calendar;
 
 import ir.faez.assignment2.R;
@@ -19,19 +18,24 @@ import ir.faez.assignment2.data.async.ExpenseCudAsyncTask;
 import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.model.Expense;
 import ir.faez.assignment2.databinding.ActivityNewExpenseBinding;
+import ir.faez.assignment2.network.NetworkHelper;
 import ir.faez.assignment2.utils.Action;
+import ir.faez.assignment2.utils.Result;
+import ir.faez.assignment2.utils.ResultListener;
 import ir.faez.assignment2.utils.Status;
 
 //import ir.faez.assignment2.data.async.ExpenseCudAsyncTask;
 
 
 public class NewExpenseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
-    public static final String EXTRA_MESSAGE = "EXPENSE_OBJ";
+
+    private static final String TAG = "NEW_EXPENSE";
     private static String expenseTypeSp;
     private ActivityNewExpenseBinding binding;
     private String titleEt;
     private String amountEt;
     private String paymentDateTv;
+    private NetworkHelper networkHelper;
 
     public static String getExpenseTypeSp() {
         return expenseTypeSp;
@@ -52,6 +56,9 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
 
         spinnerHandler();
         invokeOnClickListeners();
+
+        // initializing networkHelper
+        networkHelper = NetworkHelper.getInstance(getApplicationContext());
 
     }
 
@@ -113,28 +120,51 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         amountEt = binding.newExpenseAmountEt.getText().toString();
         paymentDateTv = binding.newExpenseDatePickerTv.getText().toString();
 
+        final Expense exp = new Expense(MainActivity.currUser.getId(), titleEt, amountEt,
+                paymentDateTv, expenseTypeSp, Status.expenses);
         if (!titleEt.isEmpty() && !amountEt.isEmpty() && !paymentDateTv.isEmpty()) {
 //
-            // implementing db
-            Expense exp = new Expense(MainActivity.currUser.getId(), titleEt, amountEt, paymentDateTv, expenseTypeSp, Status.expenses);
-
-            ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(this, Action.INSERT_ACTION, new DbResponse<Expense>() {
+            // implementing Network
+            networkHelper.insertExpense(exp, MainActivity.currUser, new ResultListener<Expense>() {
                 @Override
-                public void onSuccess(Expense expense) {
+                public void onResult(Result<Expense> result) {
+                    Log.d(TAG, "Result of inserting expense in server: " + result);
+                    Error error = result != null ? result.getError() : null;
+                    Expense resultExp = result != null ? result.getItem() : null;
+
+                    if (result == null || resultExp == null || error != null) {
+                        String errorMsg = error != null ? error.getMessage() : getString(R.string.somethingWentWrongOnInsert);
+                        Toast.makeText(NewExpenseActivity.this, errorMsg,
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    exp.setId(resultExp.getId());
 
 
-                    Toast.makeText(NewExpenseActivity.this, R.string.newExpenseAdded, Toast.LENGTH_SHORT).show();
-                    finish();
-                }
+                    // implementing db
 
-                @Override
-                public void onError(Error error) {
-                    Toast.makeText(NewExpenseActivity.this, R.string.cantAddNewExpense, Toast.LENGTH_SHORT).show();
+                    ExpenseCudAsyncTask expenseCudAsyncTask =
+                            new ExpenseCudAsyncTask(getApplicationContext(), Action.INSERT_ACTION,
+                                    new DbResponse<Expense>() {
+                                @Override
+                                public void onSuccess(Expense expense) {
+                                    Toast.makeText(NewExpenseActivity.this, R.string.newExpenseAdded,
+                                            Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
 
+                                @Override
+                                public void onError(Error error) {
+                                    Toast.makeText(NewExpenseActivity.this, R.string.cantAddNewExpense, Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+
+                    expenseCudAsyncTask.execute(exp);
                 }
             });
 
-            expenseCudAsyncTask.execute(exp);
 
         } else {
             binding.newExpenseTitleEt.setError("Fill!");
