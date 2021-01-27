@@ -3,7 +3,6 @@ package ir.faez.assignment2.data.async;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import ir.faez.assignment2.R;
 import ir.faez.assignment2.data.db.DAO.DbResponse;
 import ir.faez.assignment2.data.db.DAO.UserDao;
 import ir.faez.assignment2.data.db.DbManager;
@@ -33,6 +32,7 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
     @Override
     protected Long doInBackground(User... users) {
         user = users[0];
+
 
         switch (action) {
             case Action.INSERT_ACTION:
@@ -87,7 +87,7 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
         if (response > 0) {
             dbResponse.onSuccess(user);
         } else {
-            Error error = new Error(String.valueOf(R.string.somethingWentWrongOnDelete));
+            Error error = new Error("Something went wrong on delete :(");
             dbResponse.onError(error);
         }
     }
@@ -96,7 +96,7 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
         if (affectedRows > 0) {
             dbResponse.onSuccess(user);
         } else {
-            Error error = new Error(String.valueOf(R.string.somethingWentWrongOnUpdate));
+            Error error = new Error("Something went wrong on update :(");
             dbResponse.onError(error);
         }
     }
@@ -106,7 +106,7 @@ public class UserCudAsyncTask extends AsyncTask<User, Void, Long> {
             user.setId(userId.toString());
             dbResponse.onSuccess(user);
         } else {
-            Error error = new Error(String.valueOf(R.string.somethingWentWrongOnInsert));
+            Error error = new Error("Something went wrong on insert :(");
             dbResponse.onError(error);
         }
     }

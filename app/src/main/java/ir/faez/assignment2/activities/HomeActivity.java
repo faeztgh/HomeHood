@@ -85,28 +85,25 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void invokeExitBtn() {
-        MainActivity.currUser.setIsLoggedIn("false");
-
         UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(this, Action.UPDATE_ACTION,
                 new DbResponse<User>() {
                     @Override
                     public void onSuccess(User user) {
-                        if (MainActivity.currUser.isLoggedIn().equals("false")) {
-
+                        if (user != null) {
+                            MainActivity.currUser = null;
                             moveTaskToBack(true);
                             finish();
-                            android.os.Process.killProcess(android.os.Process.myPid());
                         }
                     }
 
                     @Override
                     public void onError(Error error) {
-
+                        Toast.makeText(HomeActivity.this,
+                                R.string.cantLogout, Toast.LENGTH_SHORT).show();
                     }
                 });
+        MainActivity.currUser.setIsLoggedIn("false");
         userCudAsyncTask.execute(MainActivity.currUser);
-
-
     }
 
 

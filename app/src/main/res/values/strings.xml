@@ -51,6 +51,7 @@
     <string name="networkJsonError">Cannot convert data to json</string>
     <string name="networkGeneralError">Network Error!</string>
     <string name="fill">Fill!</string>
+    <string name="cantLogout">Can\'t log out, Please try again</string>
     <string name="itemCheckedSuccessfully">Item Checked Successfully!</string>
     <string name="filePathNotSet">File Path Not Set!</string>
     <string name="filePathNotFound">File Path Not Found!</string>
@@ -63,6 +64,7 @@
     <string name="problemToWriteOnFile">Problem To Write On File!</string>
     <string name="errorMessageNotExist">Error Message Not Exist!</string>
     <string name="chooseLocation">Please choose your location</string>
+    <string name="passwordLengthError">Password length must be 6 or more</string>
 
     <string name="successfulRegister">You Signed up Successfully!</string>
     <string name="cantGetUsersFromDb">Can\'t read users from Db!</string>

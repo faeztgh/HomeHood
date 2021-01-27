@@ -45,20 +45,17 @@ public class GetSpecificUserAsyncTask extends AsyncTask<String, Void, User> {
     @Override
     protected void onPostExecute(User user) {
 
-      switch (action){
-          case Action.GET_BY_USERNAME_ACTION:
+        switch (action) {
+            case Action.GET_BY_STATE_ACTION:
+            case Action.GET_BY_USERNAME_ACTION:
+                if (user != null) {
+                    dbResponse.onSuccess(user);
+                } else {
+                    Error error = new Error(String.valueOf(R.string.somethingWentWrong));
+                    dbResponse.onError(error);
+                }
+                break;
 
-          case Action.GET_BY_STATE_ACTION:
-
-              if (user != null) {
-                  dbResponse.onSuccess(user);
-              } else {
-                  Error error = new Error(String.valueOf(R.string.somethingWentWrong));
-                  dbResponse.onError(error);
-              }
-
-              break;
-
-      }
+        }
     }
 }

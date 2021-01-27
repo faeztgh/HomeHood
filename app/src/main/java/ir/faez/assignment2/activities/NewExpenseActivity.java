@@ -27,7 +27,8 @@ import ir.faez.assignment2.utils.Status;
 //import ir.faez.assignment2.data.async.ExpenseCudAsyncTask;
 
 
-public class NewExpenseActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class NewExpenseActivity extends AppCompatActivity implements
+        AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private static final String TAG = "NEW_EXPENSE";
     private static String expenseTypeSp;
@@ -72,7 +73,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
     // handling spinner
     private void spinnerHandler() {
         Spinner spinner = findViewById(R.id.newExpense_expenseType_sp);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.expenseTypes, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.expenseTypes, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
@@ -156,7 +158,8 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
 
                                 @Override
                                 public void onError(Error error) {
-                                    Toast.makeText(NewExpenseActivity.this, R.string.cantAddNewExpense, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(NewExpenseActivity.this,
+                                            R.string.cantAddNewExpense, Toast.LENGTH_SHORT).show();
 
                                 }
                             });
@@ -185,7 +188,9 @@ public class NewExpenseActivity extends AppCompatActivity implements AdapterView
         int year = calendar.get(Calendar.YEAR);
 
 
-        datePickerDialog = new DatePickerDialog(NewExpenseActivity.this, (datePicker, year1, month1, dayOfMonth) -> binding.newExpenseDatePickerTv.setText(day + " - " + month + " - " + year), day, month, year);
+        datePickerDialog = new DatePickerDialog(NewExpenseActivity.this,
+                (datePicker, year1, month1, dayOfMonth) -> binding.newExpenseDatePickerTv.
+                        setText(day + " - " + month + " - " + year), day, month, year);
         datePickerDialog.show();
     }
 }

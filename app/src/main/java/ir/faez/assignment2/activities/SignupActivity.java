@@ -116,9 +116,8 @@ public class SignupActivity
             return true;
         } else {
             changeHint(binding.passwordEdt);
-            Toast.makeText(SignupActivity.this,
-                    "password length must be 6 or more",
-                    Toast.LENGTH_SHORT).show();
+            binding.passwordEdt.setError("Password length must be 6 or more");
+
             return false;
         }
     }

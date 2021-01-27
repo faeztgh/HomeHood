@@ -238,6 +238,7 @@ public class NetworkHelper {
         requestQueue.add(request);
     }
 
+    // Insert Expense
     public void insertExpense(final Expense expense, final User currUser, final ResultListener<Expense> listener) {
         if (!isNetworkConnected()) {
             Error error = new Error(context.getString(R.string.networkConnectionError));
@@ -312,6 +313,7 @@ public class NetworkHelper {
     }
 
 
+    //Update Expense
     public void updateExpense(final Expense expense, final User currentUser, final ResultListener<Expense> listener) {
         if (!isNetworkConnected()) {
             Error error = new Error(context.getString(R.string.networkGeneralError));
@@ -385,6 +387,9 @@ public class NetworkHelper {
     }
 
 
+
+
+    //    Delete Expense
     public void deleteExpense(final Expense expense, final User currentUser, final ResultListener<Expense> listener) {
         if (!isNetworkConnected()) {
             Error error = new Error(context.getString(R.string.networkGeneralError));

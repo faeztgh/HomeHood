@@ -110,12 +110,26 @@ public class ExpensesActivity extends AppCompatActivity implements View.OnClickL
         recyclerView.setAdapter(expenseAdapter);
     }
 
-    private void invokeOnClickListeners() {
-        addNewExpenseIv.setOnClickListener(this);
-        backIv.setOnClickListener(this);
+
+
+    // Double check for user specific expenses
+    private void gatherCurrUserExpenses() {
+
+        currUserExpenses = new ArrayList<>();
+        if (allExpenses != null) {
+            for (Expense exp : allExpenses) {
+                if (exp != null) {
+                    if (exp.getOwnerId().equals(MainActivity.currUser.getId())
+                            && exp.getStatus().equals(Status.expenses)) {
+                        currUserExpenses.add(exp);
+                    }
+                }
+            }
+        }
+
+        recyclerViewInit();
+
     }
-
-
     //----------------------------- Implementing View.OnclickListener ------------------------------
     @Override
     public void onClick(View v) {
@@ -143,26 +157,15 @@ public class ExpensesActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
+    private void invokeOnClickListeners() {
+        addNewExpenseIv.setOnClickListener(this);
+        backIv.setOnClickListener(this);
+    }
+
     //------------------ OnExpenseListener Interface implementation --------------------------------
 
 
-    private void gatherCurrUserExpenses() {
 
-        currUserExpenses = new ArrayList<>();
-        if (allExpenses != null) {
-            for (Expense exp : allExpenses) {
-                if (exp != null) {
-                    if (exp.getOwnerId().equals(MainActivity.currUser.getId())
-                            && exp.getStatus().equals(Status.expenses)) {
-                        currUserExpenses.add(exp);
-                    }
-                }
-            }
-        }
-
-        recyclerViewInit();
-
-    }
 
     @Override
     public void onItemRemoved(Expense expense, int position) {
@@ -186,7 +189,8 @@ public class ExpensesActivity extends AppCompatActivity implements View.OnClickL
                     }
 
                     // removing from DB
-                    ExpenseCudAsyncTask expenseCudAsyncTask = new ExpenseCudAsyncTask(ExpensesActivity.this,
+                    ExpenseCudAsyncTask expenseCudAsyncTask =
+                            new ExpenseCudAsyncTask(ExpensesActivity.this,
                             Action.DELETE_ACTION, new DbResponse<Expense>() {
                         @Override
                         public void onSuccess(Expense expense) {

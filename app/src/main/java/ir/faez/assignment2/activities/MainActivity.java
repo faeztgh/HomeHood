@@ -1,12 +1,9 @@
 package ir.faez.assignment2.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -32,24 +29,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String userName;
     private String password;
     private ActivityMainBinding binding;
-    private SharedPreferences preferences;//TODO
+    private SharedPreferences preferences;
     private NetworkHelper networkHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         getUserByState();
-
-        preferences = getPreferences(Context.MODE_PRIVATE);
 
         init();
     }
 
 
     private void init() {
-
         // initializing NetworkHelper
         networkHelper = NetworkHelper.getInstance(getApplicationContext());
 
@@ -60,10 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // invoke Listeners
         invokeOnClickListeners();
-
-
     }
-
 
 
     private void getUserByState() {
@@ -106,14 +96,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void signInBtn() {
         loadUserPass();
 
-//        Log.i(TAG, "signInBtn: " + currUser.isLoggedIn());
+
         if (currUser == null) {
 
             if (isAuth()) {
 
                 // implementing online Auth
-                final User user = new User(userName, password);
-                networkHelper.signinUser(user, new ResultListener<User>() {
+                final User finalUser = new User(userName, password);
+                networkHelper.signinUser(finalUser, new ResultListener<User>() {
                     @Override
                     public void onResult(Result<User> result) {
                         Error error = (result != null) ? result.getError() : null;
@@ -124,27 +114,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             return;
                         }
 
-                        user.setId(resultUser.getId());
-                        user.setSessionToken(resultUser.getSessionToken());
-                        user.setName(resultUser.getName());
-                        user.setLastName(resultUser.getLastName());
-                        user.setPhoneNo(resultUser.getPhoneNo());
-                        user.setEmail(resultUser.getEmail());
-                        user.setUsername(resultUser.getUsername());
-                        user.setPassword(resultUser.getPassword());
-                        user.setFullAddress(resultUser.getFullAddress());
-                        user.setNumberOfUnit(resultUser.getNumberOfUnit());
-                        user.setSmsChkbx(resultUser.isSmsChkbx());
-                        user.setEmailChkbx(resultUser.isEmailChkbx());
-                        user.setIsLoggedIn("true");
+                        finalUser.setId(resultUser.getId());
+                        finalUser.setSessionToken(resultUser.getSessionToken());
+                        finalUser.setName(resultUser.getName());
+                        finalUser.setLastName(resultUser.getLastName());
+                        finalUser.setPhoneNo(resultUser.getPhoneNo());
+                        finalUser.setEmail(resultUser.getEmail());
+                        finalUser.setUsername(resultUser.getUsername());
+                        finalUser.setPassword(resultUser.getPassword());
+                        finalUser.setFullAddress(resultUser.getFullAddress());
+                        finalUser.setNumberOfUnit(resultUser.getNumberOfUnit());
+                        finalUser.setSmsChkbx(resultUser.isSmsChkbx());
+                        finalUser.setEmailChkbx(resultUser.isEmailChkbx());
+                        finalUser.setIsLoggedIn("true");
 
                         // implementing user insertion into database
-                        UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(getApplicationContext(), Action.INSERT_ACTION, new DbResponse<User>() {
+                        UserCudAsyncTask userCudAsyncTask = new UserCudAsyncTask(getApplicationContext(),
+                                Action.INSERT_ACTION, new DbResponse<User>() {
                             @Override
                             public void onSuccess(User user) {
-                                currUser = user;
-                                if (currUser != null) {
-                                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                if (user != null) {
+                                    currUser = resultUser;
+                                    Intent intent = new Intent(getApplicationContext(),
+                                            HomeActivity.class);
                                     startActivity(intent);
                                     finish();
 
@@ -155,10 +147,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             @Override
                             public void onError(Error error) {
-                                Toast.makeText(MainActivity.this, R.string.cantSignInError, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this,
+                                        R.string.cantSignInError, Toast.LENGTH_SHORT).show();
                             }
                         });
-                        userCudAsyncTask.execute(user);
+                        userCudAsyncTask.execute(finalUser);
                     }
                 });
             }
